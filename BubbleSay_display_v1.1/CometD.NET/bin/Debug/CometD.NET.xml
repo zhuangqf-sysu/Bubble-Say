@@ -1,0 +1,3141 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CometD.NET</name>
+    </assembly>
+    <members>
+        <member name="T:CometD.Bayeux.ChannelId">
+            <summary>
+            <p>Reification of a channel id with methods to test properties
+            and compare with other <see cref="T:CometD.Bayeux.ChannelId"/>s.</p>
+            <p>A <see cref="T:CometD.Bayeux.ChannelId"/> breaks the channel id into path segments so that, for example,
+            <code>"/foo/bar"</code> breaks into <code>["foo","bar"]</code>.</p>
+            <p><see cref="T:CometD.Bayeux.ChannelId"/> can be wild, when they end with one or two wild characters <code>"*"</code>;
+            a <see cref="T:CometD.Bayeux.ChannelId"/> is shallow wild if it ends with one wild character (for example <code>"/foo/bar/*"</code>)
+            and deep wild if it ends with two wild characters (for example <code>"/foo/bar/**"</code>).</p>
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.ChannelId.#ctor(System.String)">
+            <summary>
+            Constructs a new <see cref="T:CometD.Bayeux.ChannelId"/> with the given id.
+            </summary>
+            <param name="id">The channel id in string form.</param>
+        </member>
+        <member name="P:CometD.Bayeux.ChannelId.IsWild">
+            <summary>
+            Whether this <see cref="T:CometD.Bayeux.ChannelId"/> is either shallow wild or deep wild.
+            </summary>
+        </member>
+        <member name="P:CometD.Bayeux.ChannelId.IsShallowWild">
+            <summary>
+            Shallow wild <see cref="T:CometD.Bayeux.ChannelId"/>s end with a single wild character <code>"*"</code>
+            and match non wild channels with the same depth.
+            </summary>
+            <example>
+            <code>"/foo/*"</code> matches <code>"/foo/bar"</code>, but not <code>"/foo/bar/baz"</code>.
+            </example>
+            <value>Whether this <see cref="T:CometD.Bayeux.ChannelId"/> is a shallow wild channel id.</value>
+        </member>
+        <member name="P:CometD.Bayeux.ChannelId.IsDeepWild">
+            <summary>
+            Deep wild <see cref="T:CometD.Bayeux.ChannelId"/>s end with a double wild character "**"
+            and match non wild channels with the same or greater depth.
+            </summary>
+            <example>
+            <code>"/foo/**"</code> matches <code>"/foo/bar"</code> and <code>"/foo/bar/baz"</code>.
+            </example>
+            <value>Whether this <see cref="T:CometD.Bayeux.ChannelId"/> is a deep wild channel id.</value>
+        </member>
+        <member name="P:CometD.Bayeux.ChannelId.IsMeta">
+            <summary>
+            A <see cref="T:CometD.Bayeux.ChannelId"/> is a meta <see cref="T:CometD.Bayeux.ChannelId"/>
+            if it starts with <code>"/meta/"</code>.
+            </summary>
+            <value>Whether the first segment is "meta".</value>
+        </member>
+        <member name="P:CometD.Bayeux.ChannelId.IsService">
+            <summary>
+            A <see cref="T:CometD.Bayeux.ChannelId"/> is a service <see cref="T:CometD.Bayeux.ChannelId"/>
+            if it starts with <code>"/service/"</code>.
+            </summary>
+            <value>Whether the first segment is "service".</value>
+        </member>
+        <member name="P:CometD.Bayeux.ChannelId.IsBroadcast">
+            <summary>
+            Returns whether this <see cref="T:CometD.Bayeux.ChannelId"/>
+            is neither <see cref="P:CometD.Bayeux.ChannelId.IsMeta">meta</see> nor <see cref="P:CometD.Bayeux.ChannelId.IsService">service</see>.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.ChannelId.Matches(CometD.Bayeux.ChannelId)">
+            <summary>
+            <p>Tests whether this <see cref="T:CometD.Bayeux.ChannelId"/> matches the given <see cref="T:CometD.Bayeux.ChannelId"/>.</p>
+            <p>If the given <see cref="T:CometD.Bayeux.ChannelId"/> is wild,
+            then it matches only if it is equal to this <see cref="T:CometD.Bayeux.ChannelId"/>.</p>
+            <p>If this <see cref="T:CometD.Bayeux.ChannelId"/> is non-wild,
+            then it matches only if it is equal to the given <see cref="T:CometD.Bayeux.ChannelId"/>.</p>
+            <p>Otherwise, this <see cref="T:CometD.Bayeux.ChannelId"/> is either shallow or deep wild, and
+            matches <see cref="T:CometD.Bayeux.ChannelId"/>s with the same number of equal segments (if it is
+            shallow wild), or <see cref="T:CometD.Bayeux.ChannelId"/>s with the same or a greater number of
+            equal segments (if it is deep wild).</p>
+            </summary>
+            <param name="channelId">The channelId to match.</param>
+            <returns>True if this <see cref="T:CometD.Bayeux.ChannelId"/> matches the given <see cref="T:CometD.Bayeux.ChannelId"/>.</returns>
+        </member>
+        <member name="P:CometD.Bayeux.ChannelId.Depth">
+            <summary>
+            Returns how many segments this <see cref="T:CometD.Bayeux.ChannelId"/> is made of.
+            </summary>
+            <seealso cref="M:CometD.Bayeux.ChannelId.GetSegment(System.Int32)"/>
+        </member>
+        <member name="M:CometD.Bayeux.ChannelId.IsAncestorOf(CometD.Bayeux.ChannelId)">
+            <summary>
+            Returns whether this <see cref="T:CometD.Bayeux.ChannelId"/> is an ancestor
+            of the given <see cref="T:CometD.Bayeux.ChannelId"/>.
+            </summary>
+            <param name="id">The channel to test.</param>
+            <seealso cref="M:CometD.Bayeux.ChannelId.IsParentOf(CometD.Bayeux.ChannelId)"/>
+        </member>
+        <member name="M:CometD.Bayeux.ChannelId.IsParentOf(CometD.Bayeux.ChannelId)">
+            <summary>
+            Returns whether this <see cref="T:CometD.Bayeux.ChannelId"/> is the parent
+            of the given <see cref="T:CometD.Bayeux.ChannelId"/>.
+            </summary>
+            <param name="id">The channel to test.</param>
+            <seealso cref="M:CometD.Bayeux.ChannelId.IsAncestorOf(CometD.Bayeux.ChannelId)"/>
+        </member>
+        <member name="P:CometD.Bayeux.ChannelId.Parent">
+            <summary>
+            Returns the <see cref="T:CometD.Bayeux.ChannelId"/> parent of this <see cref="T:CometD.Bayeux.ChannelId"/>.
+            </summary>
+            <seealso cref="M:CometD.Bayeux.ChannelId.IsParentOf(CometD.Bayeux.ChannelId)"/>
+        </member>
+        <member name="M:CometD.Bayeux.ChannelId.GetSegment(System.Int32)">
+            <summary>
+            Returns the index-nth segment of this channel,
+            or null if no such segment exist.
+            </summary>
+            <param name="index">The segment index.</param>
+            <seealso cref="P:CometD.Bayeux.ChannelId.Depth"/>
+        </member>
+        <member name="P:CometD.Bayeux.ChannelId.Wilds">
+            <summary>
+            The list of wilds channels that match this channel,
+            or the empty list if this channel is already wild.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.ChannelId.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:CometD.Bayeux.ChannelId"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.ChannelId.Equals(CometD.Bayeux.ChannelId)">
+            <summary>
+            Determines whether this <see cref="T:CometD.Bayeux.ChannelId"/> and a specified
+            <see cref="T:CometD.Bayeux.ChannelId"/> object have the same value.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.ChannelId.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/>
+            is equal to the current <see cref="T:CometD.Bayeux.ChannelId"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.ChannelId.GetHashCode">
+            <summary>
+            Returns the hash code for this <see cref="T:CometD.Bayeux.ChannelId"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.ChannelId.Create(System.String)">
+            <summary>
+            Retrieves the cached <see cref="T:CometD.Bayeux.ChannelId"/> or create it if it does not exist.
+            </summary>
+        </member>
+        <member name="T:CometD.Bayeux.Client.IClientSession">
+            <summary>
+            <p>This interface represents the client side Bayeux session.</p>
+            <p>In addition to the common Bayeux session, this
+            interface provides method to configure extension, access channels
+            and to initiate the communication with a Bayeux server(s).</p>
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.Client.IClientSession.AddExtension(CometD.Bayeux.Client.IExtension)">
+            <summary>
+            Adds a new extension to this session.
+            </summary>
+            <param name="extension">The extension to add.</param>
+            <seealso cref="M:CometD.Bayeux.Client.IClientSession.RemoveExtension(CometD.Bayeux.Client.IExtension)"/>
+        </member>
+        <member name="M:CometD.Bayeux.Client.IClientSession.RemoveExtension(CometD.Bayeux.Client.IExtension)">
+            <summary>
+            Removes an existing extension from this session.
+            </summary>
+            <param name="extension">The extension to remove.</param>
+            <seealso cref="M:CometD.Bayeux.Client.IClientSession.AddExtension(CometD.Bayeux.Client.IExtension)"/>
+        </member>
+        <member name="P:CometD.Bayeux.Client.IClientSession.Extensions">
+            <summary>
+            Returns an immutable list of extensions present in this <see cref="T:CometD.Bayeux.Client.IClientSession"/> instance.
+            </summary>
+            <seealso cref="M:CometD.Bayeux.Client.IClientSession.AddExtension(CometD.Bayeux.Client.IExtension)"/>
+        </member>
+        <member name="M:CometD.Bayeux.Client.IClientSession.Handshake">
+            <summary>
+            Equivalent to <see cref="M:CometD.Bayeux.Client.IClientSession.Handshake(System.Collections.Generic.IDictionary{System.String,System.Object})"/>(null).
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.Client.IClientSession.Handshake(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            <p>Initiates the Bayeux protocol handshake with the server(s).</p>
+            <p>The handshake initiated by this method is asynchronous and
+            does not wait for the handshake response.</p>
+            </summary>
+            <param name="handshakeFields">Additional fields to add to the handshake message.</param>
+        </member>
+        <member name="M:CometD.Bayeux.Client.IClientSession.GetChannel(System.String,System.Boolean)">
+            <summary>
+            <p>Returns a client side channel scoped by this session.</p>
+            <p>The channel name may be for a specific channel (e.g. "/foo/bar")
+            or for a wild channel (e.g. "/meta/**" or "/foo/*").</p>
+            <p>This method will always return a channel, even if the
+            the channel has not been created on the server side.  The server
+            side channel is only involved once a publish or subscribe method
+            is called on the channel returned by this method.</p>
+            </summary>
+            <example>
+            <p>Typical usage examples are:</p>
+            <pre>
+                clientSession.GetChannel("/foo/bar").Subscribe(mySubscriptionListener);
+                clientSession.GetChannel("/foo/bar").Publish("Hello");
+                clientSession.GetChannel("/meta/*").AddListener(myMetaChannelListener);
+            </pre>
+            </example>
+            <param name="channelId">Specific or wild channel name.</param>
+            <param name="create">Whether to create the client session channel if it does not exist.</param>
+            <returns>A channel scoped by this session.</returns>
+        </member>
+        <member name="T:CometD.Bayeux.Client.IExtension">
+            <summary>
+            <p>Extension API for client session.</p>
+            <p>An extension allows user code to interact with the Bayeux protocol as late
+            as messages are sent or as soon as messages are received.</p>
+            <p>Messages may be modified, or state held, so that the extension adds a
+            specific behavior simply by observing the flow of Bayeux messages.</p>
+            </summary>
+            <seealso cref="M:CometD.Bayeux.Client.IClientSession.AddExtension(CometD.Bayeux.Client.IExtension)"/>
+        </member>
+        <member name="M:CometD.Bayeux.Client.IExtension.Receive(CometD.Bayeux.Client.IClientSession,CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Callback method invoked every time a normal message is received.
+            </summary>
+            <param name="session">The session object that is receiving the message.</param>
+            <param name="message">The message received.</param>
+            <returns>True if message processing should continue, false if it should stop.</returns>
+        </member>
+        <member name="M:CometD.Bayeux.Client.IExtension.ReceiveMeta(CometD.Bayeux.Client.IClientSession,CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Callback method invoked every time a meta message is received.
+            </summary>
+            <param name="session">The session object that is receiving the meta message.</param>
+            <param name="message">The meta message received.</param>
+            <returns>True if message processing should continue, false if it should stop.</returns>
+        </member>
+        <member name="M:CometD.Bayeux.Client.IExtension.Send(CometD.Bayeux.Client.IClientSession,CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Callback method invoked every time a normal message is being sent.
+            </summary>
+            <param name="session">The session object that is sending the message.</param>
+            <param name="message">The message being sent.</param>
+            <returns>True if message processing should continue, false if it should stop.</returns>
+        </member>
+        <member name="M:CometD.Bayeux.Client.IExtension.SendMeta(CometD.Bayeux.Client.IClientSession,CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Callback method invoked every time a meta message is being sent.
+            </summary>
+            <param name="session">The session object that is sending the meta message.</param>
+            <param name="message">The meta message being sent.</param>
+            <returns>True if message processing should continue, false if it should stop.</returns>
+        </member>
+        <member name="T:CometD.Bayeux.Client.AdapterExtension">
+            <summary>
+            Empty implementation of <see cref="T:CometD.Bayeux.Client.IExtension"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.Client.AdapterExtension.Receive(CometD.Bayeux.Client.IClientSession,CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Callback method invoked every time a normal message is received.
+            </summary>
+            <returns>Always true.</returns>
+        </member>
+        <member name="M:CometD.Bayeux.Client.AdapterExtension.ReceiveMeta(CometD.Bayeux.Client.IClientSession,CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Callback method invoked every time a meta message is received.
+            </summary>
+            <returns>Always true.</returns>
+        </member>
+        <member name="M:CometD.Bayeux.Client.AdapterExtension.Send(CometD.Bayeux.Client.IClientSession,CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Callback method invoked every time a normal message is being sent.
+            </summary>
+            <returns>Always true.</returns>
+        </member>
+        <member name="M:CometD.Bayeux.Client.AdapterExtension.SendMeta(CometD.Bayeux.Client.IClientSession,CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Callback method invoked every time a meta message is being sent.
+            </summary>
+            <returns>Always true.</returns>
+        </member>
+        <member name="M:CometD.Bayeux.Client.AdapterExtension.Equals(CometD.Bayeux.Client.IExtension)">
+            <summary>
+            Indicates whether the current <see cref="T:CometD.Bayeux.Client.IExtension"/>
+            is equal to another <see cref="T:CometD.Bayeux.Client.IExtension"/>.
+            </summary>
+        </member>
+        <member name="T:CometD.Bayeux.Client.IClientSessionChannel">
+            <summary>
+            <p>A client side channel representation.</p>
+            <p>An <see cref="T:CometD.Bayeux.Client.IClientSessionChannel"/> is scoped to a particular <see cref="T:CometD.Bayeux.Client.IClientSession"/>
+            that is obtained by a call to <see cref="M:CometD.Bayeux.Client.IClientSession.GetChannel(System.String,System.Boolean)"/>.</p>
+            </summary>
+            <example>
+            <p>Typical usage examples are:</p>
+            <pre>
+                clientSession.GetChannel("/foo/bar").Subscribe(mySubscriptionListener);
+                clientSession.GetChannel("/foo/bar").Publish("Hello");
+                clientSession.GetChannel("/meta/*").AddListener(myMetaChannelListener);
+            </pre>
+            </example>
+        </member>
+        <member name="M:CometD.Bayeux.Client.IClientSessionChannel.AddListener(CometD.Bayeux.Client.IClientSessionChannelListener)">
+            <summary>
+            <p>Adds a listener to this channel.</p>
+            <p>If the listener is a <see cref="T:CometD.Bayeux.Client.IMessageListener"/>, it will be invoked
+            if a message arrives to this channel.</p>
+            <p>Adding a listener never involves communication with the server,
+            differently from <see cref="M:CometD.Bayeux.Client.IClientSessionChannel.Subscribe(CometD.Bayeux.Client.IMessageListener)"/>.</p>
+            <p>Listeners are best suited to receive messages from meta channels.</p>
+            </summary>
+            <param name="listener">The listener to add.</param>
+            <seealso cref="M:CometD.Bayeux.Client.IClientSessionChannel.RemoveListener(CometD.Bayeux.Client.IClientSessionChannelListener)"/>
+        </member>
+        <member name="M:CometD.Bayeux.Client.IClientSessionChannel.RemoveListener(CometD.Bayeux.Client.IClientSessionChannelListener)">
+            <summary>
+            <p>Removes the given <paramref name="listener"/> from this channel.</p>
+            <p>Removing a listener never involves communication with the server,
+            differently from <see cref="M:CometD.Bayeux.Client.IClientSessionChannel.Unsubscribe(CometD.Bayeux.Client.IMessageListener)"/>.</p>
+            </summary>
+            <param name="listener">The listener to remove (null to remove all).</param>
+            <seealso cref="M:CometD.Bayeux.Client.IClientSessionChannel.AddListener(CometD.Bayeux.Client.IClientSessionChannelListener)"/>
+        </member>
+        <member name="P:CometD.Bayeux.Client.IClientSessionChannel.Listeners">
+            <summary>
+            Returns an immutable snapshot of the listeners.
+            </summary>
+            <seealso cref="M:CometD.Bayeux.Client.IClientSessionChannel.AddListener(CometD.Bayeux.Client.IClientSessionChannelListener)"/>
+        </member>
+        <member name="P:CometD.Bayeux.Client.IClientSessionChannel.Session">
+            <summary>
+            The client session associated with this channel.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.Client.IClientSessionChannel.Publish(System.Object)">
+            <summary>
+            <p>Publishes the given <paramref name="data"/> onto this channel.</p>
+            <p>The <paramref name="data"/> published must not be null and can be any object that
+            can be natively converted to JSON (numbers, strings, arrays, lists, maps),
+            or objects for which a JSON converter has been registered with the
+            infrastructure responsible of the JSON conversion.</p>
+            </summary>
+            <param name="data">The data to publish.</param>
+            <seealso cref="M:CometD.Bayeux.Client.IClientSessionChannel.Publish(System.Object,System.String)"/>
+        </member>
+        <member name="M:CometD.Bayeux.Client.IClientSessionChannel.Publish(System.Object,System.String)">
+            <summary>
+            Publishes the given <paramref name="data"/> to this channel,
+            optionally specifying the <paramref name="messageId"/> to set on the publish message.
+            </summary>
+            <param name="data">The data to publish.</param>
+            <param name="messageId">The message id to set on the message,
+            or null to let the implementation choose the message id.</param>
+            <seealso cref="P:CometD.Bayeux.IMessage.Id"/>
+        </member>
+        <member name="M:CometD.Bayeux.Client.IClientSessionChannel.Subscribe(CometD.Bayeux.Client.IMessageListener)">
+            <summary>
+            <p>Subscribes the given <paramref name="listener"/> to receive messages sent to this channel.</p>
+            <p>Subscription involves communication with the server only for the first listener
+            subscribed to this channel. Listeners registered after the first will not cause a message
+            being sent to the server.</p>
+            </summary>
+            <param name="listener">The listener to register and invoke when a message arrives on this channel.</param>
+            <seealso cref="M:CometD.Bayeux.Client.IClientSessionChannel.Unsubscribe(CometD.Bayeux.Client.IMessageListener)"/>
+            <seealso cref="M:CometD.Bayeux.Client.IClientSessionChannel.AddListener(CometD.Bayeux.Client.IClientSessionChannelListener)"/>
+        </member>
+        <member name="M:CometD.Bayeux.Client.IClientSessionChannel.Unsubscribe(CometD.Bayeux.Client.IMessageListener)">
+            <summary>
+            <p>Unsubscribes the given <paramref name="listener"/> from receiving messages sent to this channel.</p>
+            <p>Unsubscription involves communication with the server only for the last listener
+            unsubscribed from this channel.</p>
+            </summary>
+            <param name="listener">The listener to unsubscribe.</param>
+            <seealso cref="M:CometD.Bayeux.Client.IClientSessionChannel.Subscribe(CometD.Bayeux.Client.IMessageListener)"/>
+            <seealso cref="M:CometD.Bayeux.Client.IClientSessionChannel.Unsubscribe"/>
+        </member>
+        <member name="M:CometD.Bayeux.Client.IClientSessionChannel.Unsubscribe">
+            <summary>
+            Unsubscribes all subscribers registered on this channel.
+            </summary>
+            <seealso cref="M:CometD.Bayeux.Client.IClientSessionChannel.Unsubscribe(CometD.Bayeux.Client.IMessageListener)"/>
+        </member>
+        <member name="P:CometD.Bayeux.Client.IClientSessionChannel.Subscribers">
+            <summary>
+            Return an immutable snapshot of the subscribers.
+            </summary>
+            <seealso cref="M:CometD.Bayeux.Client.IClientSessionChannel.Subscribe(CometD.Bayeux.Client.IMessageListener)"/>
+        </member>
+        <member name="M:CometD.Bayeux.Client.IClientSessionChannel.NotifyMessageListeners(CometD.Bayeux.IMessage)">
+            <summary>
+            Notifies the received message to all existing listeners.
+            </summary>
+        </member>
+        <member name="T:CometD.Bayeux.Client.IClientSessionChannelListener">
+            <summary>
+            <p>Represents a listener on a <see cref="T:CometD.Bayeux.Client.IClientSessionChannel"/>.</p>
+            <p>Sub-interfaces specify the exact semantic of the listener.</p>
+            </summary>
+        </member>
+        <member name="T:CometD.Bayeux.Client.IMessageListener">
+            <summary>
+            A listener for messages on a <see cref="T:CometD.Bayeux.Client.IClientSessionChannel"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.Client.IMessageListener.OnMessage(CometD.Bayeux.Client.IClientSessionChannel,CometD.Bayeux.IMessage)">
+            <summary>
+            Callback invoked when a message is received on the given <paramref name="channel"/>.
+            </summary>
+            <param name="channel">The channel that received the message.</param>
+            <param name="message">The message received.</param>
+        </member>
+        <member name="T:CometD.Bayeux.Client.CallbackMessageListener`1">
+            <summary>
+            This is the implementation of a listener for messages on a <see cref="T:CometD.Bayeux.Client.IClientSessionChannel"/>
+            via an <see cref="T:System.Action`2"/> callback delegation.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.Client.CallbackMessageListener`1.#ctor(System.Action{CometD.Bayeux.Client.IClientSessionChannel,CometD.Bayeux.IMessage,`0},`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CallbackMessageListener&lt;T&gt;"/> class.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.Client.CallbackMessageListener`1.OnMessage(CometD.Bayeux.Client.IClientSessionChannel,CometD.Bayeux.IMessage)">
+            <summary>
+            Callback invoked when a message is received on the given <paramref name="channel"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.Client.CallbackMessageListener`1.ExecAsyncCallback(System.IAsyncResult)">
+            <summary>
+            All calls to BeginInvoke must be matched with calls to EndInvoke according to the MSDN documentation.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.Client.CallbackMessageListener`1.GetHashCode">
+            <summary>
+            Returns the hash code for this instance.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.Client.CallbackMessageListener`1.ToString">
+            <summary>
+            Used to debug.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.Client.CallbackMessageListener`1.Equals(System.Object)">
+            <summary>
+            Determines whether this callback listener
+            and the specified <see cref="T:System.Object"/> are equal.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.Client.CallbackMessageListener`1.Equals(CometD.Bayeux.Client.IClientSessionChannelListener)">
+            <summary>
+            Determines whether this callback listener
+            and the specified <see cref="T:CometD.Bayeux.Client.IClientSessionChannelListener"/> are equal.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.Client.CallbackMessageListener`1.Equals(CometD.Bayeux.Client.IMessageListener)">
+            <summary>
+            Determines whether this callback listener
+            and the specified <see cref="T:CometD.Bayeux.Client.IMessageListener"/> are equal.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.Client.CallbackMessageListener`1.Equals(CometD.Bayeux.Client.CallbackMessageListener{`0})">
+            <summary>
+            Determines whether this callback listener
+            is equal to another <see cref="T:CallbackMessageListener&lt;T&gt;"/> object.
+            </summary>
+        </member>
+        <member name="T:CometD.Bayeux.IBayeux">
+            <summary>
+            <p>This interface is the common API for both client-side and
+            server-side configuration and usage of the Bayeux object.</p>
+            <p>The <see cref="T:CometD.Bayeux.IBayeux"/> object handles configuration options and a set of
+            transports that is negotiated with the server.</p>
+            </summary>
+            <seealso cref="T:CometD.Bayeux.ITransport"/>
+        </member>
+        <member name="P:CometD.Bayeux.IBayeux.KnownTransportNames">
+            <summary>
+            The set of known transport names of this <see cref="T:CometD.Bayeux.IBayeux"/> object.
+            </summary>
+            <seealso cref="P:CometD.Bayeux.IBayeux.AllowedTransports"/>
+        </member>
+        <member name="M:CometD.Bayeux.IBayeux.GetTransport(System.String)">
+            <summary>
+            The transport with the given name or null if no such transport exist.
+            </summary>
+            <param name="transport">The transport name.</param>
+        </member>
+        <member name="P:CometD.Bayeux.IBayeux.AllowedTransports">
+            <summary>
+            The ordered list of transport names that will be used in the
+            negotiation of transports with the other peer.
+            </summary>
+            <seealso cref="P:CometD.Bayeux.IBayeux.KnownTransportNames"/>
+        </member>
+        <member name="M:CometD.Bayeux.IBayeux.GetOption(System.String)">
+            <summary>
+            Gets the configuration option with the given <paramref name="qualifiedName"/>.
+            </summary>
+            <param name="qualifiedName">The configuration option name.</param>
+            <seealso cref="M:CometD.Bayeux.IBayeux.SetOption(System.String,System.Object)"/>
+            <seealso cref="P:CometD.Bayeux.IBayeux.OptionNames"/>
+        </member>
+        <member name="M:CometD.Bayeux.IBayeux.SetOption(System.String,System.Object)">
+            <summary>
+            Sets the specified configuration option with the given <paramref name="value"/>.
+            </summary>
+            <param name="qualifiedName">The configuration option name.</param>
+            <param name="value">The configuration option value.</param>
+            <seealso cref="M:CometD.Bayeux.IBayeux.GetOption(System.String)"/>
+        </member>
+        <member name="P:CometD.Bayeux.IBayeux.OptionNames">
+            <summary>
+            The set of configuration options.
+            </summary>
+            <seealso cref="M:CometD.Bayeux.IBayeux.GetOption(System.String)"/>
+        </member>
+        <member name="T:CometD.Bayeux.IBayeuxListener">
+            <summary>
+            <p>The common base interface for Bayeux listeners.</p>
+            <p>Specific sub-interfaces define what kind of events listeners will be notified.</p>
+            </summary>
+        </member>
+        <member name="T:CometD.Bayeux.Channel">
+            <summary>
+            Bayeux channel constants.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Channel.Meta">
+            <summary>
+            Constant representing the meta prefix.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Channel.MetaHandshake">
+            <summary>
+            Constant representing the handshake meta channel.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Channel.MetaConnect">
+            <summary>
+            Constant representing the connect meta channel.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Channel.MetaSubscribe">
+            <summary>
+            Constant representing the subscribe meta channel.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Channel.MetaUnsubscribe">
+            <summary>
+            Constant representing the unsubscribe meta channel.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Channel.MetaDisconnect">
+            <summary>
+            Constant representing the disconnect meta channel.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Channel.Service">
+            <summary>
+            Constant representing the "service" prefix.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Channel.Topic">
+            <summary>
+            Constant representing the "topic" prefix.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.Channel.IsMeta(System.String)">
+            <summary>
+            Helper method to test if the string form of a <see cref="T:CometD.Bayeux.ChannelId"/>
+            represents a meta <see cref="T:CometD.Bayeux.ChannelId"/>.
+            </summary>
+            <param name="channelId">The channel id to test.</param>
+            <returns>Whether the given channel id is a meta channel id.</returns>
+        </member>
+        <member name="M:CometD.Bayeux.Channel.IsService(System.String)">
+            <summary>
+            Helper method to test if the string form of a <see cref="T:CometD.Bayeux.ChannelId"/>
+            represents a service <see cref="T:CometD.Bayeux.ChannelId"/>.
+            </summary>
+            <param name="channelId">The channel id to test.</param>
+            <returns>Whether the given channel id is a service channel id.</returns>
+        </member>
+        <member name="M:CometD.Bayeux.Channel.IsBroadcast(System.String)">
+            <summary>
+            Helper method to test if the string form of a <see cref="T:CometD.Bayeux.ChannelId"/>
+            represents a broadcast <see cref="T:CometD.Bayeux.ChannelId"/>.
+            </summary>
+            <param name="channelId">The channel id to test.</param>
+            <returns>Whether the given channel id is a broadcast channel id.</returns>
+        </member>
+        <member name="T:CometD.Bayeux.IChannel">
+             <summary>
+             <p>A Bayeux channel is the primary message routing mechanism within Bayeux:
+             both Bayeux clients and Bayeux server use channels to group listeners that
+             are interested in receiving messages with that channel.</p>
+            
+             <p>This interface is the common root for both the client side
+             representation of a channel and the server side representation of a channel.</p>
+            
+             <p>Channels are identified with strings that look like paths (e.g. "/foo/bar")
+             called "channel id".<br/>
+             Meta channels have channel ids starting with "/meta/" and are reserved for the
+             operation of they Bayeux protocol.<br/>
+             Service channels have channel ids starting with "/service/" and are channels
+             for which publish is disabled, so that only server side listeners will receive
+             the messages.</p>
+            
+             <p>A channel id may also be specified with wildcards.<br/>
+             For example "/meta/*" refers to all top level meta channels
+             like "/meta/subscribe" or "/meta/handshake".<br/>
+             The channel "/foo/**" is deeply wild and refers to all channels like "/foo/bar",
+             "/foo/bar/bob" and "/foo/bar/wibble/bip".<br/>
+             Wildcards can only be specified as last segment of a channel; therefore channel
+             "/foo/*/bar/**" is an invalid channel.</p>
+             </summary>
+        </member>
+        <member name="P:CometD.Bayeux.IChannel.Id">
+            <summary>
+            The channel id as a string.
+            </summary>
+        </member>
+        <member name="P:CometD.Bayeux.IChannel.ChannelId">
+            <summary>
+            The channel ID as a <see cref="P:CometD.Bayeux.IChannel.ChannelId"/>.
+            </summary>
+        </member>
+        <member name="P:CometD.Bayeux.IChannel.IsMeta">
+            <summary>
+            Tells whether the channel is a meta channel, that is if its
+            id starts with <code>"/meta/"</code>.
+            </summary>
+            <value>True if the channel is a meta channel.</value>
+        </member>
+        <member name="P:CometD.Bayeux.IChannel.IsService">
+            <summary>
+            Tells whether the channel is a service channel, that is if its
+            id starts with <code>"/service/"</code>.
+            </summary>
+            <value>True if the channel is a service channel.</value>
+        </member>
+        <member name="P:CometD.Bayeux.IChannel.IsBroadcast">
+            <summary>
+            A broadcasting channel is a channel that is neither a
+            meta channel nor a service channel.
+            </summary>
+            <value>Whether the channel is a broadcasting channel.</value>
+        </member>
+        <member name="P:CometD.Bayeux.IChannel.IsWild">
+            <summary>
+            Tells whether a channel contains the wild character '*', for example
+            <code>"/foo/*"</code> or if it is <see cref="P:CometD.Bayeux.IChannel.IsDeepWild"/>.
+            </summary>
+            <value>True if the channel contains the '*' or '**' characters.</value>
+        </member>
+        <member name="P:CometD.Bayeux.IChannel.IsDeepWild">
+            <summary>
+            Tells whether a channel contains the deep wild characters '**', for example
+            <code>"/foo/**"</code>.
+            </summary>
+            <value>True if the channel contains the '**' characters.</value>
+        </member>
+        <member name="M:CometD.Bayeux.IChannel.SetAttribute(System.String,System.Object)">
+            <summary>
+            <p>Sets a named channel attribute value.</p>
+            <p>Channel attributes are convenience data that allows arbitrary
+            application data to be associated with a channel.</p>
+            </summary>
+            <param name="name">The attribute name.</param>
+            <param name="value">The attribute value.</param>
+        </member>
+        <member name="M:CometD.Bayeux.IChannel.GetAttribute(System.String)">
+            <summary>
+            Retrieves the value of named channel attribute.
+            </summary>
+            <param name="name">The name of the attribute.</param>
+            <returns>The attribute value or null if the attribute is not present.</returns>
+        </member>
+        <member name="P:CometD.Bayeux.IChannel.AttributeNames">
+            <summary>
+            The list of channel attribute names.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.IChannel.RemoveAttribute(System.String)">
+            <summary>
+            Removes a named channel attribute.
+            </summary>
+            <param name="name">The name of the attribute.</param>
+            <returns>The value of the attribute.</returns>
+        </member>
+        <member name="T:CometD.Bayeux.Message">
+            <summary>
+            Bayeux message fields and enumeration values.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.ClientIdField">
+            <summary>
+            Constant representing the message client-id field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.DataField">
+            <summary>
+            Constant representing the message data field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.ChannelField">
+            <summary>
+            Constant representing the message channel field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.IdField">
+            <summary>
+            Constant representing the message id field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.ErrorField">
+            <summary>
+            Constant representing the message error field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.TimestampField">
+            <summary>
+            Constant representing the message timestamp field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.TransportField">
+            <summary>
+            Constant representing the message transport field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.AdviceField">
+            <summary>
+            Constant representing the message advice field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.SuccessfulField">
+            <summary>
+            Constant representing the message successful field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.SubscriptionField">
+            <summary>
+            Constant representing the message subscription field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.ExtensionField">
+            <summary>
+            Constant representing the message extension field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.ConnectionTypeField">
+            <summary>
+            Constant representing the message connection-type field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.VersionField">
+            <summary>
+            Constant representing the message version field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.MinVersionField">
+            <summary>
+            Constant representing the message minimum-version field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.SupportedConnectionTypesField">
+            <summary>
+            Constant representing the message supported-connection-types field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.ReconnectField">
+            <summary>
+            Constant representing the message reconnect field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.IntervalField">
+            <summary>
+            Constant representing the message interval field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.TimeoutField">
+            <summary>
+            Constant representing the message timeout field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.MessageField">
+            <summary>
+            Constant representing the message "message" field that contain sent failed messages.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.ExceptionField">
+            <summary>
+            Constant representing the message "exception" field.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.ReconnectRetryValue">
+            <summary>
+            Constant representing the message reconnect retry value.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.ReconnectHandshakeValue">
+            <summary>
+            Constant representing the message reconnect handshake value.
+            </summary>
+        </member>
+        <member name="F:CometD.Bayeux.Message.ReconnectNoneValue">
+            <summary>
+            Constant representing the message reconnect none value.
+            </summary>
+        </member>
+        <member name="T:CometD.Bayeux.IMessage">
+            <summary>
+            <p>The Bayeux protocol exchange information by means of messages.</p>
+            <p>This interface represents the API of a Bayeux message, and consists
+            mainly of convenience methods to access the known fields of the message dictionary.</p>
+            <p>This interface comes in both an immutable and mutable versions.<br/>
+            Mutability may be deeply enforced by an implementation, so that it is not correct
+            to cast a passed Message, to a Message.Mutable, even if the implementation allows this.</p>
+            </summary>
+        </member>
+        <member name="P:CometD.Bayeux.IMessage.Advice">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.AdviceField"/>.
+            </summary>
+            <value>The advice of the message.</value>
+        </member>
+        <member name="P:CometD.Bayeux.IMessage.Channel">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.ChannelField"/>.
+            </summary>
+            <remarks>Bayeux message always have a non null channel.</remarks>
+            <value>The channel of the message.</value>
+        </member>
+        <member name="P:CometD.Bayeux.IMessage.ChannelId">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.ChannelField"/>.
+            </summary>
+            <remarks>Bayeux message always have a non null channel.</remarks>
+            <value>The channel of the message.</value>
+        </member>
+        <member name="P:CometD.Bayeux.IMessage.ClientId">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.ClientIdField"/>.
+            </summary>
+            <value>The client id of the message.</value>
+        </member>
+        <member name="P:CometD.Bayeux.IMessage.Data">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.DataField"/>.
+            </summary>
+            <value>The data of the message.</value>
+            <seealso cref="P:CometD.Bayeux.IMessage.DataAsDictionary"/>
+        </member>
+        <member name="P:CometD.Bayeux.IMessage.IsMeta">
+            <summary>
+            A messages that has a meta channel is dubbed a "meta message".
+            </summary>
+            <value>Whether the channel's message is a meta channel.</value>
+        </member>
+        <member name="P:CometD.Bayeux.IMessage.IsPublishReply">
+            <summary>
+            Publish message replies contain the "successful" field.
+            </summary>
+            <value>Whether this message is a publish reply (as opposed to a published message).</value>
+        </member>
+        <member name="P:CometD.Bayeux.IMessage.IsSuccessful">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.SuccessfulField"/>.
+            </summary>
+            <value>Whether the message is successful.</value>
+        </member>
+        <member name="P:CometD.Bayeux.IMessage.DataAsDictionary">
+            <summary>
+            The data of the message as a <code>Dictionary</code>.
+            </summary>
+            <seealso cref="P:CometD.Bayeux.IMessage.Data"/>
+        </member>
+        <member name="P:CometD.Bayeux.IMessage.Extension">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.ExtensionField"/>.
+            </summary>
+            <value>The extension of the message.</value>
+        </member>
+        <member name="P:CometD.Bayeux.IMessage.Id">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.IdField"/>.
+            </summary>
+            <value>The id of the message.</value>
+        </member>
+        <member name="T:CometD.Bayeux.IMutableMessage">
+            <summary>
+            The mutable version of a <see cref="T:CometD.Bayeux.IMessage"/>.
+            </summary>
+        </member>
+        <member name="P:CometD.Bayeux.IMutableMessage.Channel">
+            <summary>
+            The channel of this message.
+            </summary>
+        </member>
+        <member name="P:CometD.Bayeux.IMutableMessage.ClientId">
+            <summary>
+            The client id of this message.
+            </summary>
+        </member>
+        <member name="P:CometD.Bayeux.IMutableMessage.Data">
+            <summary>
+            The data of this message.
+            </summary>
+        </member>
+        <member name="P:CometD.Bayeux.IMutableMessage.Id">
+            <summary>
+            The id of this message.
+            </summary>
+        </member>
+        <member name="P:CometD.Bayeux.IMutableMessage.IsSuccessful">
+            <summary>
+            The successfulness of this message.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.IMutableMessage.GetAdvice(System.Boolean)">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.AdviceField"/> and create it if it does not exist.
+            </summary>
+            <param name="create">Whether to create the advice field if it does not exist.</param>
+            <returns>The advice of the message.</returns>
+        </member>
+        <member name="M:CometD.Bayeux.IMutableMessage.GetDataAsDictionary(System.Boolean)">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.DataField"/> and create it if it does not exist.
+            </summary>
+            <param name="create">Whether to create the data field if it does not exist.</param>
+            <returns>The data of the message.</returns>
+        </member>
+        <member name="M:CometD.Bayeux.IMutableMessage.GetExtension(System.Boolean)">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.ExtensionField"/> and create it if it does not exist.
+            </summary>
+            <param name="create">Whether to create the extension field if it does not exist.</param>
+            <returns>The extension of the message.</returns>
+        </member>
+        <member name="T:CometD.Bayeux.ISession">
+            <summary>
+            <p>A Bayeux session represents a connection between a Bayeux client and a Bayeux server.</p>
+            <p>This interface is the common base interface for both the server side and the client side
+            representations of a session:</p>
+            <ul>
+            <li>if the remote client is not a Java client, then only a <code>Server.IServerSession</code>
+            instance will exist on the server and represents the remote client.</li>
+            <li>if the remote client is a Java client, then a <see cref="T:CometD.Bayeux.Client.IClientSession"/>
+            instance will exist on the client and a <code>Server.IServerSession</code>
+            instance will exist on the server, linked by the same client id.</li>
+            <li>if the client is a Java client, but it is located in the server, then the
+            <see cref="T:CometD.Bayeux.Client.IClientSession"/> instance will be an instance
+            of <code>Server.ILocalSession</code> and will be associated
+            with a <code>Server.IServerSession</code> instance.</li>
+            </ul>
+            </summary>
+        </member>
+        <member name="P:CometD.Bayeux.ISession.Id">
+            <summary>
+            <p>The client id of the session.</p>
+            <p>This would more correctly be called a "sessionId", but for
+            backwards compatibility with the Bayeux protocol,
+            it is a field called "clientId" that identifies a session.</p>
+            </summary>
+            <value>The id of this session.</value>
+        </member>
+        <member name="P:CometD.Bayeux.ISession.IsConnected">
+            <summary>
+            A connected session is a session where the link between the client and the server
+            has been established.
+            </summary>
+            <value>Whether the session is connected.</value>
+            <seealso cref="M:CometD.Bayeux.ISession.Disconnect"/>
+        </member>
+        <member name="P:CometD.Bayeux.ISession.IsHandshook">
+            <summary>
+            A handshook session is a session where the handshake has successfully completed.
+            </summary>
+            <value>Whether the session is handshook.</value>
+        </member>
+        <member name="M:CometD.Bayeux.ISession.Disconnect">
+            <summary>
+            Disconnects this session, ending the link between the client and the server peers.
+            </summary>
+            <seealso cref="P:CometD.Bayeux.ISession.IsConnected"/>
+        </member>
+        <member name="M:CometD.Bayeux.ISession.SetAttribute(System.String,System.Object)">
+            <summary>
+            <p>Sets a named session attribute value.</p>
+            <p>Session attributes are convenience data that allows arbitrary
+            application data to be associated with a session.</p>
+            </summary>
+            <param name="name">The attribute name.</param>
+            <param name="value">The attribute value.</param>
+        </member>
+        <member name="M:CometD.Bayeux.ISession.GetAttribute(System.String)">
+            <summary>
+            Retrieves the value of named session attribute.
+            </summary>
+            <param name="name">The name of the attribute.</param>
+            <returns>The attribute value or null if the attribute is not present.</returns>
+        </member>
+        <member name="P:CometD.Bayeux.ISession.AttributeNames">
+            <summary>
+            Returns the list of session attribute names.
+            </summary>
+        </member>
+        <member name="M:CometD.Bayeux.ISession.RemoveAttribute(System.String)">
+            <summary>
+            Removes a named session attribute.
+            </summary>
+            <param name="name">The name of the attribute.</param>
+            <returns>The value of the attribute.</returns>
+        </member>
+        <member name="M:CometD.Bayeux.ISession.Batch(System.Action)">
+            <summary>
+            Executes the given command in a batch so that any Bayeux message sent
+            by the command (via the Bayeux API) is queued up until the end of the
+            command and then all messages are sent at once.
+            </summary>
+            <param name="batch">The Runnable to run as a batch.</param>
+        </member>
+        <member name="M:CometD.Bayeux.ISession.StartBatch">
+            <summary>
+            <p>Starts a batch, to be ended with <see cref="M:CometD.Bayeux.ISession.EndBatch"/>.</p>
+            <p>The <see cref="M:CometD.Bayeux.ISession.Batch(System.Action)"/> method should be preferred since it automatically
+            starts and ends a batch without relying on a try/finally block.</p>
+            <p>This method is to be used in the cases where the use of <see cref="M:CometD.Bayeux.ISession.Batch(System.Action)"/>
+            is not possible or would make the code more complex.</p>
+            </summary>
+            <seealso cref="M:CometD.Bayeux.ISession.EndBatch"/>
+            <seealso cref="M:CometD.Bayeux.ISession.Batch(System.Action)"/>
+        </member>
+        <member name="M:CometD.Bayeux.ISession.EndBatch">
+            <summary>
+            Ends a batch started with <see cref="M:CometD.Bayeux.ISession.StartBatch"/>.
+            </summary>
+            <returns>True if the batch ended and there were messages to send.</returns>
+            <seealso cref="M:CometD.Bayeux.ISession.StartBatch"/>
+        </member>
+        <member name="T:CometD.Bayeux.ITransport">
+            <summary>
+            <p>A transport abstract the details of the protocol used to send
+            Bayeux messages over the network.</p>
+            <p>Transports have well known names and both a Bayeux client
+            and a Bayeux server can negotiate the transport they want to use by
+            exchanging the list of supported transport names.</p>
+            <p>Transports can be configured using <em>options</em>. The transport
+            implementation provides a set of option names that
+            it uses to configure itself and an option prefix
+            that allows specific tuning of the configuration.<br/>
+            Option prefixes may be composed of segments separated by the "." character.</p>
+            <p>For example, imagine to configure the transports for normal long polling,
+            for JSONP long polling and for WebSocket. All provide a common option name
+            called "timeout" and the JSONP long polling transport provides also a specific
+            option name called "callback".<br/>
+            The normal long polling transport has prefix "long-polling.json",
+            the JSONP long polling transport has prefix "long-polling.jsonp" and the
+            WebSocket long polling transport has prefix "ws". The first two prefixes
+            have 2 segments.</p>
+            <p>The configurator will asks the transports the set of option names, obtaining
+            ["timeout", "callback"]; then will ask each transport its prefix, obtaining
+            ["long-polling.json", "long-polling.jsonp"].<br/>
+            The configurator can now look in the configuration (for example a properties
+            file or servlet init parameters) for entries that combine the option names and
+            option prefix segments, such as:</p>
+            <ul>
+            <li>"timeout" => specifies the timeout for all transports</li>
+            <li>"long-polling.timeout" => specifies the timeout for both normal long polling
+            transport and JSONP long polling transport, but not for the WebSocket transport</li>
+            <li>"long-polling.jsonp.timeout" => specifies the timeout for JSONP long polling
+            transport overriding more generic entries</li>
+            <li>"ws.timeout" => specifies the timeout for WebSocket transport overriding more
+            generic entries</li>
+            <li>"long-polling.jsonp.callback" => specifies the "callback" parameter for the
+            JSONP long polling transport.</li>
+            </ul>
+            </summary>
+        </member>
+        <member name="P:CometD.Bayeux.ITransport.Name">
+            <summary>
+            The well known name of this transport, used in transport negotiations.
+            </summary>
+            <seealso cref="P:CometD.Bayeux.IBayeux.AllowedTransports"/>
+        </member>
+        <member name="M:CometD.Bayeux.ITransport.GetOption(System.String)">
+            <summary>
+            Returns the configuration option with the given <paramref name="qualifiedName"/>.
+            </summary>
+            <param name="qualifiedName">The configuration option name.</param>
+            <seealso cref="P:CometD.Bayeux.ITransport.OptionNames"/>
+        </member>
+        <member name="M:CometD.Bayeux.ITransport.SetOption(System.String,System.Object)">
+            <summary>
+            Sets the specified configuration option with the given <paramref name="value"/>.
+            </summary>
+            <param name="qualifiedName">The configuration option name.</param>
+            <param name="value">The configuration option value.</param>
+            <seealso cref="M:CometD.Bayeux.ITransport.GetOption(System.String)"/>
+        </member>
+        <member name="P:CometD.Bayeux.ITransport.OptionNames">
+            <summary>
+            The set of configuration options.
+            </summary>
+            <seealso cref="M:CometD.Bayeux.ITransport.GetOption(System.String)"/>
+        </member>
+        <member name="P:CometD.Bayeux.ITransport.OptionPrefix">
+            <summary>
+            Specifies an option prefix made of string segments separated by the "."
+            character, used to override more generic configuration entries.
+            </summary>
+            <value>The option prefix for this transport.</value>
+        </member>
+        <member name="T:CometD.Client.BayeuxClient">
+             <summary>
+             <p>This class is the implementation of a client for the Bayeux protocol.</p>
+             <p>A <see cref="T:CometD.Client.BayeuxClient"/> can receive/publish messages from/to a Bayeux server,
+             and it is the counterpart in Java of the JavaScript library used in browsers
+             (and as such it is ideal for Swing applications, load testing tools, etc.).</p>
+             <p>A <see cref="T:CometD.Client.BayeuxClient"/> handshakes with a Bayeux server
+             and then subscribes <see cref="T:CometD.Bayeux.Client.IMessageListener"/> to channels in order
+             to receive messages, and may also publish messages to the Bayeux server.</p>
+             <p><see cref="T:CometD.Client.BayeuxClient"/> relies on pluggable transports for communication with the Bayeux
+             server, and the most common transport is <see cref="T:CometD.Client.Transport.LongPollingTransport"/>,
+             which uses HTTP to transport Bayeux messages and it is based on
+             <a href="http://wiki.eclipse.org/Jetty/Feature/HttpClient">Jetty's HTTP client</a>.</p>
+             <p>When the communication with the server is finished,
+             the <see cref="T:CometD.Client.BayeuxClient"/> can be disconnected from the Bayeux server.</p>
+             </summary>
+             <example>
+             <p>Typical usage:</p>
+             <pre>
+             // Handshake
+             string url = "http://localhost:8080/cometd";
+             BayeuxClient client = new BayeuxClient(url, new LongPollingTransport(null, null));
+             client.Handshake();
+             client.WaitFor(1000, BayeuxClientStates.Connected);
+            
+             // Subscription to channels
+             IClientSessionChannel channel = client.GetChannel("/foo");
+             channel.Subscribe(new IMessageListener() {
+                 public void OnMessage(IClientSessionChannel channel, IMessage message) {
+                     // Handle the message
+                 }
+             });
+            
+             // Publishing to channels
+             IDictionary&lt;string, object&gt; data = new Dictionary&lt;string, object&gt;();
+             data["bar"] = "baz";
+             channel.Publish(data);
+            
+             // Disconnecting
+             client.Disconnect();
+             client.WaitFor(1000, BayeuxClientStates.Disconnected);
+             </pre>
+             </example>
+        </member>
+        <member name="F:CometD.Client.BayeuxClient.BackOffIncrementOption">
+            <summary>
+            The Bayeux client option "backOffIncrement".
+            </summary>
+        </member>
+        <member name="F:CometD.Client.BayeuxClient.MaxBackOffOption">
+            <summary>
+            The Bayeux client option "maxBackOff".
+            </summary>
+        </member>
+        <member name="F:CometD.Client.BayeuxClient.BayeuxVersion">
+            <summary>
+            Constant representing the Bayeux protocol version "1.0".
+            </summary>
+        </member>
+        <member name="F:CometD.Client.BayeuxClient.logger">
+            <summary>Used to debug.</summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClient.DisconnectListener">
+            <summary>
+            Refers to an instance of the class <see cref="T:CometD.Client.DisconnectTransportListener"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.#ctor(System.String,CometD.Client.Transport.ClientTransport[])">
+            <summary>
+            <p>Creates a <see cref="T:CometD.Client.BayeuxClient"/> that will connect to the Bayeux server
+            at the given URL and with the given transport(s).</p>
+            <p>This constructor allocates a new scheduler; it is recommended that
+            when creating a large number of <see cref="T:CometD.Client.BayeuxClient"/>s a shared scheduler is used.</p>
+            </summary>
+            <param name="url">The Bayeux server URL to connect to.</param>
+            <param name="transports">The default (mandatory) and additional optional transports to use.</param>
+        </member>
+        <member name="P:CometD.Client.BayeuxClient.BackOffIncrement">
+            <summary>
+            Returns the period of time that increments the pause to wait before trying to reconnect
+            after each failed attempt to connect to the Bayeux server.
+            </summary>
+            <seealso cref="P:CometD.Client.BayeuxClient.MaxBackOff"/>
+        </member>
+        <member name="P:CometD.Client.BayeuxClient.MaxBackOff">
+            <summary>
+            Returns the maximum pause to wait before trying to reconnect after each failed attempt
+            to connect to the Bayeux server.
+            </summary>
+            <seealso cref="P:CometD.Client.BayeuxClient.BackOffIncrement"/>
+        </member>
+        <member name="P:CometD.Client.BayeuxClient.Options">
+            <summary>
+            Returns the options that configure with <see cref="T:CometD.Client.BayeuxClient"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.GetCookie(System.String)">
+            <summary>
+            Retrieves the cookie with the given name, if available.
+            </summary>
+            <remarks>Note that currently only HTTP transports support cookies.</remarks>
+            <param name="name">The cookie name.</param>
+            <returns>The cookie value.</returns>
+            <seealso cref="M:CometD.Client.BayeuxClient.SetCookie(System.String,System.String)"/>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.SetCookie(System.String,System.String)">
+            <summary>
+            Sets a cookie that never expires.
+            </summary>
+            <param name="name">The cookie name.</param>
+            <param name="value">The cookie value.</param>
+            <seealso cref="M:CometD.Client.BayeuxClient.SetCookie(System.String,System.String,System.Int32)"/>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.SetCookie(System.String,System.String,System.Int32)">
+            <summary>
+            Sets a cookie with the given max age in seconds.
+            </summary>
+            <param name="name">The cookie name.</param>
+            <param name="value">The cookie value.</param>
+            <param name="maxAge">The max age of the cookie, in seconds, before expiration.</param>
+        </member>
+        <member name="P:CometD.Client.BayeuxClient.KnownTransportNames">
+            <summary>
+            Returns unmodifiable collection of known transports.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.GetTransport(System.String)">
+            <summary>
+            Returns a registered <see cref="T:CometD.Bayeux.ITransport"/> within this <see cref="T:CometD.Client.BayeuxClient"/>.
+            </summary>
+            <param name="transport">The transport name.</param>
+            <returns>Return null if the <paramref name="transport"/> did not registered.</returns>
+        </member>
+        <member name="P:CometD.Client.BayeuxClient.AllowedTransports">
+            <summary>
+            Returns unmodifiable list of allowed transports.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.GetOption(System.String)">
+            <summary>
+            Gets the configuration option with the given <paramref name="qualifiedName"/>.
+            </summary>
+            <param name="qualifiedName">The configuration option name.</param>
+            <seealso cref="M:CometD.Client.BayeuxClient.SetOption(System.String,System.Object)"/>
+            <seealso cref="P:CometD.Client.BayeuxClient.OptionNames"/>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.SetOption(System.String,System.Object)">
+            <summary>
+            Sets the specified configuration option with the given <paramref name="value"/>.
+            </summary>
+            <param name="qualifiedName">The configuration option name.</param>
+            <param name="value">The configuration option value.</param>
+            <seealso cref="M:CometD.Client.BayeuxClient.GetOption(System.String)"/>
+        </member>
+        <member name="P:CometD.Client.BayeuxClient.OptionNames">
+            <summary>
+            The set of configuration options.
+            </summary>
+            <seealso cref="M:CometD.Client.BayeuxClient.GetOption(System.String)"/>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.NegotiateAllowedTransports">
+            <summary>
+            Returns a list of negotiated allowed transports.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.Handshake">
+            <summary>
+            Equivalent to <see cref="M:CometD.Client.BayeuxClient.Handshake(System.Collections.Generic.IDictionary{System.String,System.Object})"/>(null).
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.Handshake(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initiates the Bayeux protocol handshake with the server(s).
+            </summary>
+            <param name="handshakeFields">Additional fields to add to the handshake message.</param>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.Initialize">
+            <summary>
+            Initiates BackOff properties for this client session.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.NewChannelId(System.String)">
+            <summary>
+            Creates a new <see cref="T:CometD.Bayeux.ChannelId"/> object from the specified channel id string.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.NewChannel(CometD.Bayeux.ChannelId)">
+            <summary>
+            Creates a new <see cref="T:CometD.Common.AbstractSessionChannel"/> object from the specified channel id.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClient.Id">
+            <summary>
+            The client id of the session.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClient.IsConnected">
+            <summary>
+            A connected session is a session where the link between the client and the server
+            has been established.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClient.IsHandshook">
+            <summary>
+            A handshook session is a session where the handshake has successfully completed.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.Disconnect">
+            <summary>
+            Disconnects this session, ending the link between the client and the server peers.
+            </summary>
+            <seealso cref="M:CometD.Client.BayeuxClient.Disconnect(System.Int32)"/>.
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.SendBatch">
+            <summary>
+            Sends all existing messages at the end of the batch.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.SendMessages(CometD.Bayeux.IMutableMessage[])">
+            <summary>
+            Sends the specified messages via the current <see cref="T:CometD.Client.BayeuxClientState"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.TakeMessages">
+            <summary>
+            Multiple threads can call this method concurrently (for example
+            a batched Publish() is executed exactly when a message arrives
+            and a listener also performs a batched Publish() in response to
+            the message).
+            The queue must be drained atomically, otherwise we risk that the
+            same message is drained twice.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClient.IsDisconnected">
+            <summary>
+            Returns whether this <see cref="T:CometD.Client.BayeuxClient"/> is disconnecting or disconnected.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClient.CurrentState">
+            <summary>
+            Returns the current state of this <see cref="T:CometD.Client.BayeuxClient"/>.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClient.CurrentTransport">
+            <summary>
+            Returns the <see cref="T:CometD.Client.Transport.ClientTransport"/> of the current session state.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.Handshake(System.Int32)">
+            <summary>
+            <p>Performs the handshake and waits at most the given time for the handshake to complete.</p>
+            <p>When this method returns, the handshake may have failed (for example because the Bayeux
+            server denied it), so it is important to check the return value to know whether the handshake
+            completed or not.</p>
+            </summary>
+            <param name="waitMilliseconds">The time to wait for the handshake to complete.</param>
+            <seealso cref="M:CometD.Client.BayeuxClient.Handshake(System.Collections.Generic.IDictionary{System.String,System.Object},System.Int32)"/>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.Handshake(System.Collections.Generic.IDictionary{System.String,System.Object},System.Int32)">
+            <summary>
+            <p>Performs the handshake with the given template and waits at most the given time
+            for the handshake to complete.</p>
+            <p>When this method returns, the handshake may have failed (for example because the Bayeux
+            server denied it), so it is important to check the return value to know whether the handshake
+            completed or not.</p>
+            </summary>
+            <param name="template">The template object to be merged with the handshake message.</param>
+            <param name="waitMilliseconds">The time to wait for the handshake to complete.</param>
+            <seealso cref="M:CometD.Client.BayeuxClient.Handshake(System.Int32)"/>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.WaitFor(System.Int32,CometD.Client.BayeuxClientStates)">
+            <summary>
+            Waits for this <see cref="T:CometD.Client.BayeuxClient"/> to reach the given state(s) within the given time.
+            </summary>
+            <param name="waitMilliseconds">The time to wait to reach the given state(s).</param>
+            <param name="states">The primary and alternative states to reach.</param>
+            <returns>True if one of the state(s) has been reached within the given time, false otherwise.</returns>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.Dispose">
+            <summary>
+            Releases the unmanaged resources and disposes of the managed resources used by the <see cref="T:CometD.Client.BayeuxClient" />.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.Dispose(System.Boolean)">
+            <summary>
+            Releases the unmanaged resources used by the <see cref="T:CometD.Client.BayeuxClient" /> and optionally disposes of the managed resources.
+            </summary>
+            <param name="disposing">true to release both managed and unmanaged resources; false to releases only unmanaged resources.</param>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.Disconnect(System.Int32)">
+            <summary>
+            <p>Performs a <see cref="M:CometD.Client.BayeuxClient.Disconnect"/> and uses the given <paramref name="timeout"/>
+            to wait for the disconnect to complete.</p>
+            <p>When a disconnect is sent to the server, the server also wakes up the long
+            poll that may be outstanding, so that a connect reply message may arrive to
+            the client later than the disconnect reply message.</p>
+            <p>This method waits for the given <paramref name="timeout"/> for the disconnect reply, but also
+            waits the same timeout for the last connect reply; in the worst case the
+            maximum time waited will therefore be twice the given <paramref name="timeout"/> parameter.</p>
+            <p>This method returns true if the disconnect reply message arrived within the
+            given <paramref name="timeout"/> parameter, no matter if the connect reply message arrived or not.</p>
+            </summary>
+            <param name="timeout">The timeout to wait for the disconnect to complete.</param>
+            <returns>True if the disconnect completed within the given timeout.</returns>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.Abort">
+            <summary>
+            <p>Interrupts abruptly the communication with the Bayeux server.</p>
+            <p>This method may be useful to simulate network failures.</p>
+            </summary>
+            <seealso cref="M:CometD.Client.BayeuxClient.Disconnect"/>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.SendHandshake">
+            <summary>
+            Sends a new handshaking command to the Bayeux server.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.SendConnect">
+            <summary>
+            Sends a new handshaking command to the Bayeux server.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.ProcessHandshake(CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Processes a handshaking message have just arrived.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.ProcessConnect(CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Processes a connecting message have just arrived.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.ProcessDisconnect(CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Processes a disconnecting message have just arrived.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.ProcessMessage(CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Receives a normal message.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.ScheduleHandshake(System.Int64,System.Int64)">
+            <summary>
+            Try to re-handshake after the given delay (<paramref name="interval"/> + <paramref name="backOff"/>).
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.ScheduleConnect(System.Int64,System.Int64)">
+            <summary>
+            Try to re-connect after the given delay (<paramref name="interval"/> + <paramref name="backOff"/>).
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.ScheduleAction(System.Func{System.Boolean},System.Int64,System.Int64)">
+            <summary>
+            Executes a one-shot action that becomes enabled after the given delay.
+            </summary>
+        </member>
+        <member name="F:CometD.Client.BayeuxClient._terminated">
+            <summary>
+            Used to shutdown scheduler.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.Terminate">
+            <summary>
+            Terminates this client session before disconnected.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.FailMessages(System.Exception,CometD.Bayeux.IMessage[])">
+            <summary>
+            Processes all sent failed messages
+            by invoking of the receiving callback with a message that was generated from failed messages.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.NewMessage">
+            <summary>
+            Generates a new <see cref="T:CometD.Bayeux.IMutableMessage"/> with <see cref="T:CometD.Common.DictionaryMessage"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.EnqueueSend(CometD.Bayeux.IMutableMessage)">
+            <summary>
+            En-queues or sends a channel message.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.OnSending(CometD.Bayeux.IMessage[])">
+            <summary>
+            <p>Callback method invoked when the given messages have hit the network towards the Bayeux server.</p>
+            <p>The messages may not be modified, and any modification will be useless because the message have
+            already been sent.</p>
+            </summary>
+            <param name="messages">The messages sent.</param>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.OnMessages(System.Collections.Generic.IList{CometD.Bayeux.IMutableMessage})">
+            <summary>
+            <p>Callback method invoke when the given messages have just arrived from the Bayeux server.</p>
+            <p>The messages may be modified, but it's suggested to use <see cref="T:CometD.Bayeux.Client.IExtension"/>s instead.</p>
+            <p>Extensions will be processed after the invocation of this method.</p>
+            </summary>
+            <param name="messages">The messages arrived.</param>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.OnFailure(System.Exception,CometD.Bayeux.IMessage[])">
+            <summary>
+            <p>Callback method invoked when the given messages have failed to be sent.</p>
+            <p>The default implementation logs the failure at ERROR level.</p>
+            </summary>
+            <param name="ex">The exception that caused the failure.</param>
+            <param name="messages">The messages being sent.</param>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.UpdateBayeuxClientState(System.Func{CometD.Client.BayeuxClientState,CometD.Client.BayeuxClientState},System.Action)">
+            <summary>
+            Updates the state of this Bayeux client session
+            with the specified <see cref="T:CometD.Client.BayeuxClientState"/> creation callback.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClient.ToString">
+            <summary>
+            Used to debug.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.BayeuxClientChannel">
+            <summary>
+            Provides a Bayeux client implementation of the <see cref="T:CometD.Common.AbstractSessionChannel"/> class.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClientChannel.#ctor(CometD.Client.BayeuxClient,CometD.Bayeux.ChannelId)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Client.BayeuxClientChannel"/> class
+            with the specified <see cref="T:CometD.Bayeux.ChannelId"/>.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClientChannel.Session">
+            <summary>
+            The client session associated with this channel.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClientChannel.SendSubscribe">
+            <summary>
+            Send subscription message(s) to Bayeux server
+            to subscribe this session channel with all assigned message listeners.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClientChannel.SendUnsubscribe">
+            <summary>
+            Send un-subscription message(s) to Bayeux server
+            to un-subscribe all assigned message listeners from this session channel.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClientChannel.Publish(System.Object,System.String)">
+            <summary>
+            Publishes the given <paramref name="data"/> to this channel,
+            optionally specifying the <paramref name="messageId"/> to set on the publish message.
+            </summary>
+            <param name="data">The data to publish.</param>
+            <param name="messageId">The message id to set on the message,
+            or null to let the implementation choose the message id.</param>
+        </member>
+        <member name="T:CometD.Client.BayeuxClientState">
+            <summary>
+            Represents the state of a Bayeux client session.
+            </summary>
+            <seealso cref="T:CometD.Client.BayeuxClientStates"/>
+        </member>
+        <member name="P:CometD.Client.BayeuxClientState.Type">
+            <summary>
+            This client session state type (PK).
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClientState.HandshakeFields">
+            <summary>
+            The handshaking message template.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClientState.Advice">
+            <summary>
+            The last connecting message advices.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClientState.Transport">
+            <summary>
+            The current Bayeux client session transport.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClientState.ClientId">
+            <summary>
+            The last connected Bayeux client ID.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClientState.BackOff">
+            <summary>
+            The scheduler action extra delay time (in milliseconds).
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClientState.Interval">
+            <summary>
+            The scheduler action delay time (in milliseconds).
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClientState.NextBackOff">
+            <summary>
+            The next scheduler action back-off time.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClientState.IsHandshaking">
+            <summary>
+            Determines whether this client session state is handshaking or not.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClientState.IsHandshook">
+            <summary>
+            Determines whether this client session state is handshook or not.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClientState.IsConnecting">
+            <summary>
+            Determines whether this client session state is connecting or not.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClientState.IsConnected">
+            <summary>
+            Determines whether this client session state is connected or not.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClientState.IsDisconnecting">
+            <summary>
+            Determines whether this client session state is disconnecting or not.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClientState.IsDisconnected">
+            <summary>
+            Determines whether this client session state is disconnected or not.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.BayeuxClientState.Session">
+            <summary>
+            The Bayeux client session.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClientState.#ctor(CometD.Client.BayeuxClient,CometD.Client.BayeuxClientStates,System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.IDictionary{System.String,System.Object},CometD.Client.Transport.ClientTransport,System.String,System.Int64)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Client.BayeuxClientState"/> class
+            with the specified <see cref="T:CometD.Client.BayeuxClientStates"/> type.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClientState.Send(CometD.Client.Transport.ITransportListener,CometD.Bayeux.IMutableMessage[])">
+            <summary>
+            Sends the specified messages to a Bayeux server asynchronously.
+            </summary>
+            <param name="listener">The listener used to process the request response.</param>
+            <param name="messages">The list of messages will be sent in one request.</param>
+        </member>
+        <member name="M:CometD.Client.BayeuxClientState.IsUpdateableTo(CometD.Client.BayeuxClientState)">
+            <summary>
+            Checks if this client session state can be updated to the specified new state.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.BayeuxClientState.Enter(CometD.Client.BayeuxClientStates)">
+            <summary>
+            Callback invoked when the state changed from the given <paramref name="oldState"/>
+            to this state (and only when the two states are different).
+            </summary>
+            <param name="oldState">The previous state.</param>
+            <seealso cref="M:CometD.Client.BayeuxClientState.Execute"/>
+        </member>
+        <member name="M:CometD.Client.BayeuxClientState.Execute">
+            <summary>
+            Callback invoked when this state becomes the new state,
+            even if the previous state was equal to this state.
+            </summary>
+            <seealso cref="M:CometD.Client.BayeuxClientState.Enter(CometD.Client.BayeuxClientStates)"/>
+        </member>
+        <member name="M:CometD.Client.BayeuxClientState.ToString">
+            <summary>
+            Used to debug.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.DisconnectedState">
+            <summary>
+            Represents the disconnected state of a Bayeux client session.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.DisconnectedState.#ctor(CometD.Client.BayeuxClient,CometD.Client.Transport.ClientTransport)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Client.DisconnectedState"/> class.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.DisconnectedState.IsUpdateableTo(CometD.Client.BayeuxClientState)">
+            <summary>
+            This state can be updated to <see cref="F:CometD.Client.BayeuxClientStates.Handshaking"/> state only.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.DisconnectedState.Execute">
+            <summary>
+            Cancels all queued messages and terminates the Bayeux client session.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.AbortedState">
+            <summary>
+            Represents the aborted state of a Bayeux client session.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.AbortedState.#ctor(CometD.Client.BayeuxClient,CometD.Client.Transport.ClientTransport)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Client.AbortedState"/> class.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.AbortedState.Execute">
+            <summary>
+            Cancels all available HTTP requests and terminates the Bayeux client session.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.HandshakingState">
+            <summary>
+            Represents the handshaking state of a Bayeux client session.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.HandshakingState.#ctor(CometD.Client.BayeuxClient,System.Collections.Generic.IDictionary{System.String,System.Object},CometD.Client.Transport.ClientTransport)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Client.HandshakingState"/> class
+            with the specified handshaking message template: <paramref name="handshakeFields"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.HandshakingState.IsUpdateableTo(CometD.Client.BayeuxClientState)">
+            <summary>
+            This state can be updated to <see cref="F:CometD.Client.BayeuxClientStates.Connecting"/>,
+            or <see cref="F:CometD.Client.BayeuxClientStates.ReHandshaking"/>, or <see cref="F:CometD.Client.BayeuxClientStates.Disconnected"/> state only.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.HandshakingState.Enter(CometD.Client.BayeuxClientStates)">
+            <summary>
+            Always reset the subscriptions when a handshake has been requested.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.HandshakingState.Execute">
+            <summary>
+            The state could change between now and when <see cref="M:CometD.Client.BayeuxClient.SendHandshake"/> runs;
+            in this case the handshake message will not be sent and will not be failed,
+            because most probably the client has been disconnected.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.ReHandshakingState">
+            <summary>
+            Represents the re-handshaking state of a Bayeux client session.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.ReHandshakingState.#ctor(CometD.Client.BayeuxClient,System.Collections.Generic.IDictionary{System.String,System.Object},CometD.Client.Transport.ClientTransport,System.Int64)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Client.ReHandshakingState"/> class
+            with the specified handshaking message template: <paramref name="handshakeFields"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.ReHandshakingState.IsUpdateableTo(CometD.Client.BayeuxClientState)">
+            <summary>
+            This state can be updated to <see cref="F:CometD.Client.BayeuxClientStates.Connecting"/>,
+            or <see cref="F:CometD.Client.BayeuxClientStates.ReHandshaking"/>, or <see cref="F:CometD.Client.BayeuxClientStates.Disconnected"/> state only.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.ReHandshakingState.Enter(CometD.Client.BayeuxClientStates)">
+            <summary>
+            Reset the subscriptions if this is not a failure from a requested handshake.
+            Subscriptions may be queued after requested handshakes.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.ReHandshakingState.Execute">
+            <summary>
+            Try to re-handshake to the Bayeux server after the delay:
+            <see cref="P:CometD.Client.BayeuxClientState.Interval"/> + <see cref="P:CometD.Client.BayeuxClientState.BackOff"/>.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.ConnectingState">
+            <summary>
+            Represents the connecting state of a Bayeux client session.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.ConnectingState.#ctor(CometD.Client.BayeuxClient,System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.IDictionary{System.String,System.Object},CometD.Client.Transport.ClientTransport,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Client.ConnectingState"/> class
+            with the specified handshaking message template: <paramref name="handshakeFields"/>,
+            and the last received information from a Bayeux server like: <paramref name="advice"/>, <paramref name="clientId"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.ConnectingState.IsUpdateableTo(CometD.Client.BayeuxClientState)">
+            <summary>
+            This state can be updated to <see cref="F:CometD.Client.BayeuxClientStates.Connected"/>,
+            or <see cref="F:CometD.Client.BayeuxClientStates.Unconnected"/>, or <see cref="F:CometD.Client.BayeuxClientStates.ReHandshaking"/>,
+            or <see cref="F:CometD.Client.BayeuxClientStates.Disconnecting"/>, or <see cref="F:CometD.Client.BayeuxClientStates.Disconnected"/> state only.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.ConnectingState.Execute">
+            <summary>
+            Send the messages that may have queued up before the handshake completed.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.ConnectedState">
+            <summary>
+            Represents the connected state of a Bayeux client session.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.ConnectedState.#ctor(CometD.Client.BayeuxClient,System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.IDictionary{System.String,System.Object},CometD.Client.Transport.ClientTransport,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Client.ConnectedState"/> class
+            with the specified handshaking message template: <paramref name="handshakeFields"/>,
+            and the last received information from a Bayeux server like: <paramref name="advice"/>, <paramref name="clientId"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.ConnectedState.IsUpdateableTo(CometD.Client.BayeuxClientState)">
+            <summary>
+            This state can be updated to <see cref="F:CometD.Client.BayeuxClientStates.Connected"/>,
+            or <see cref="F:CometD.Client.BayeuxClientStates.Unconnected"/>, or <see cref="F:CometD.Client.BayeuxClientStates.ReHandshaking"/>,
+            or <see cref="F:CometD.Client.BayeuxClientStates.Disconnecting"/>, or <see cref="F:CometD.Client.BayeuxClientStates.Disconnected"/> state only.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.ConnectedState.Execute">
+            <summary>
+            Schedule re-connect to the Bayeux server after the delay:
+            <see cref="P:CometD.Client.BayeuxClientState.Interval"/> + <see cref="P:CometD.Client.BayeuxClientState.BackOff"/>
+            to keep the connection persistently.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.UnconnectedState">
+            <summary>
+            Represents the unconnected (re-connecting) state of a Bayeux client session.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.UnconnectedState.#ctor(CometD.Client.BayeuxClient,System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.IDictionary{System.String,System.Object},CometD.Client.Transport.ClientTransport,System.String,System.Int64)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Client.UnconnectedState"/> class
+            with the specified handshaking message template: <paramref name="handshakeFields"/>,
+            and the last received information from a Bayeux server like: <paramref name="advice"/>, <paramref name="clientId"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.UnconnectedState.IsUpdateableTo(CometD.Client.BayeuxClientState)">
+            <summary>
+            This state can be updated to <see cref="F:CometD.Client.BayeuxClientStates.Connected"/>,
+            or <see cref="F:CometD.Client.BayeuxClientStates.Unconnected"/>, or <see cref="F:CometD.Client.BayeuxClientStates.ReHandshaking"/>,
+            or <see cref="F:CometD.Client.BayeuxClientStates.Disconnected"/> state only.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.UnconnectedState.Execute">
+            <summary>
+            Try to re-connect to the Bayeux server after the delay:
+            <see cref="P:CometD.Client.BayeuxClientState.Interval"/> + <see cref="P:CometD.Client.BayeuxClientState.BackOff"/>.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.DisconnectingState">
+            <summary>
+            Represents the disconnecting state of a Bayeux client session.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.DisconnectingState.#ctor(CometD.Client.BayeuxClient,CometD.Client.Transport.ClientTransport,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Client.DisconnectingState"/> class
+            for the specified <paramref name="clientId"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.DisconnectingState.IsUpdateableTo(CometD.Client.BayeuxClientState)">
+            <summary>
+            This state can be updated to <see cref="F:CometD.Client.BayeuxClientStates.Disconnected"/> state only.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.DisconnectingState.Execute">
+            <summary>
+            Sends a new disconnecting command to the Bayeux server.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.BayeuxClientStates">
+            <summary>
+            The states that a <see cref="T:CometD.Client.BayeuxClient"/> may assume.
+            </summary>
+        </member>
+        <member name="F:CometD.Client.BayeuxClientStates.None">
+            <summary>
+            Invalid Bayeux client state.
+            </summary>
+        </member>
+        <member name="F:CometD.Client.BayeuxClientStates.Unconnected">
+            <summary>
+            State assumed after the handshake when the connection is broken.
+            </summary>
+        </member>
+        <member name="F:CometD.Client.BayeuxClientStates.Handshaking">
+            <summary>
+            State assumed when the handshake is being sent.
+            </summary>
+        </member>
+        <member name="F:CometD.Client.BayeuxClientStates.ReHandshaking">
+            <summary>
+            State assumed when a first handshake failed and the handshake is retried,
+            or when the Bayeux server requests a re-handshake.
+            </summary>
+        </member>
+        <member name="F:CometD.Client.BayeuxClientStates.Connecting">
+            <summary>
+            State assumed when the connect is being sent for the first time.
+            </summary>
+        </member>
+        <member name="F:CometD.Client.BayeuxClientStates.Connected">
+            <summary>
+            State assumed when this <see cref="T:CometD.Client.BayeuxClient"/> is connected to the Bayeux server.
+            </summary>
+        </member>
+        <member name="F:CometD.Client.BayeuxClientStates.Disconnecting">
+            <summary>
+            State assumed when the disconnect is being sent.
+            </summary>
+        </member>
+        <member name="F:CometD.Client.BayeuxClientStates.Disconnected">
+            <summary>
+            State assumed before the handshake and when the disconnect is completed.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.Extension.AcknowledgedExtension">
+            <summary>
+            This client-side extension enables the client to acknowledge to the server
+            the messages that the client has received.
+            For the acknowledgement to work, the server must be configured with the
+            correspondent server-side ack extension. If both client and server support
+            the ack extension, then the ack functionality will take place automatically.
+            By enabling this extension, all messages arriving from the server will arrive
+            via the long poll, so the comet communication will be slightly chattier.
+            The fact that all messages will return via long poll means also that the
+            messages will arrive with total order, which is not guaranteed if messages
+            can arrive via both long poll and normal response.
+            Messages are not acknowledged one by one, but instead a group of messages is
+            acknowledged when long poll returns.
+            </summary>
+        </member>
+        <member name="F:CometD.Client.Extension.AcknowledgedExtension.ExtensionField">
+            <summary>
+            The message "ack" field.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Extension.AcknowledgedExtension.ReceiveMeta(CometD.Bayeux.Client.IClientSession,CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Callback method invoked every time a meta message is received.
+            </summary>
+            <returns>Always true.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="message"/> is null.</exception>
+        </member>
+        <member name="M:CometD.Client.Extension.AcknowledgedExtension.SendMeta(CometD.Bayeux.Client.IClientSession,CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Callback method invoked every time a meta message is being sent.
+            </summary>
+            <returns>Always true.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="message"/> is null.</exception>
+        </member>
+        <member name="M:CometD.Client.Extension.AcknowledgedExtension.Equals(CometD.Bayeux.Client.IExtension)">
+            <summary>
+            Returns a value indicating whether this extension
+            is equal to another <see cref="T:CometD.Bayeux.Client.IExtension"/> object.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Extension.AcknowledgedExtension.Equals(CometD.Client.Extension.AcknowledgedExtension)">
+            <summary>
+            Returns a value indicating whether this extension
+            is equal to another <see cref="T:CometD.Client.Extension.AcknowledgedExtension"/> object.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Extension.AcknowledgedExtension.Equals(System.Object)">
+            <summary>
+            Returns a value indicating whether this extension is equal to a specified object.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Extension.AcknowledgedExtension.GetHashCode">
+            <summary>
+            Returns the hash code for this extension.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Extension.AcknowledgedExtension.ToString">
+            <summary>
+            Used to debug.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.Extension.TimestampExtension">
+            <summary>
+            This client extension will add the client timestamp into each messages
+            that will be sent to the server.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Extension.TimestampExtension.Send(CometD.Bayeux.Client.IClientSession,CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Callback method invoked every time a normal message is being sent.
+            </summary>
+            <returns>Always true.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="message"/> is null.</exception>
+        </member>
+        <member name="M:CometD.Client.Extension.TimestampExtension.SendMeta(CometD.Bayeux.Client.IClientSession,CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Callback method invoked every time a meta message is being sent.
+            </summary>
+            <returns>Always true.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="message"/> is null.</exception>
+        </member>
+        <member name="M:CometD.Client.Extension.TimestampExtension.Equals(CometD.Bayeux.Client.IExtension)">
+            <summary>
+            Returns a value indicating whether this extension
+            is equal to another <see cref="T:CometD.Bayeux.Client.IExtension"/> object.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Extension.TimestampExtension.Equals(CometD.Client.Extension.TimestampExtension)">
+            <summary>
+            Returns a value indicating whether this extension
+            is equal to another <see cref="T:CometD.Client.Extension.TimestampExtension"/> object.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Extension.TimestampExtension.Equals(System.Object)">
+            <summary>
+            Returns a value indicating whether this extension is equal to a specified object.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Extension.TimestampExtension.GetHashCode">
+            <summary>
+            Returns the hash code for this extension.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.Extension.TimeSyncExtension">
+            <summary>
+            This client extension allows the client to synchronize message's timestamp
+            with the server.
+            </summary>
+        </member>
+        <member name="F:CometD.Client.Extension.TimeSyncExtension.ExtensionField">
+            <summary>
+            The message "timesync" field.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Extension.TimeSyncExtension.ReceiveMeta(CometD.Bayeux.Client.IClientSession,CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Callback method invoked every time a meta message is received.
+            </summary>
+            <returns>Always true.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="message"/> is null.</exception>
+        </member>
+        <member name="M:CometD.Client.Extension.TimeSyncExtension.SendMeta(CometD.Bayeux.Client.IClientSession,CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Callback method invoked every time a meta message is being sent.
+            </summary>
+            <returns>Always true.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="message"/> is null.</exception>
+        </member>
+        <member name="P:CometD.Client.Extension.TimeSyncExtension.Offset">
+            <summary>
+            The server timezone offset in milliseconds.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.Extension.TimeSyncExtension.Lag">
+            <summary>
+            The local timezone lag in milliseconds.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.Extension.TimeSyncExtension.ServerTime">
+            <summary>
+            Returns the current UNIX timestamp of the server in milliseconds.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Extension.TimeSyncExtension.CurrentTimeMillis">
+            <summary>
+            Returns the current UNIX timestamp in milliseconds.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Extension.TimeSyncExtension.Equals(CometD.Bayeux.Client.IExtension)">
+            <summary>
+            Returns a value indicating whether this extension
+            is equal to another <see cref="T:CometD.Bayeux.Client.IExtension"/> object.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Extension.TimeSyncExtension.Equals(CometD.Client.Extension.TimeSyncExtension)">
+            <summary>
+            Returns a value indicating whether this extension
+            is equal to another <see cref="T:CometD.Client.Extension.TimeSyncExtension"/> object.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Extension.TimeSyncExtension.Equals(System.Object)">
+            <summary>
+            Returns a value indicating whether this extension is equal to a specified object.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Extension.TimeSyncExtension.GetHashCode">
+            <summary>
+            Returns the hash code for this extension.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Extension.TimeSyncExtension.ToString">
+            <summary>
+            Used to debug.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.PublishTransportListener">
+            <summary>
+            The implementation of a listener for publishing messages on a <see cref="T:CometD.Bayeux.ITransport"/>.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.PublishTransportListener.Session">
+            <summary>
+            The Bayeux client session.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.PublishTransportListener.#ctor(CometD.Client.BayeuxClient)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Client.PublishTransportListener"/> class.
+            </summary>
+            <param name="session">The Bayeux client session.</param>
+        </member>
+        <member name="M:CometD.Client.PublishTransportListener.OnSending(CometD.Bayeux.IMessage[])">
+            <summary>
+            Callback method invoked when the given messages have hit the network towards the Bayeux server.
+            </summary>
+            <remarks>
+            The messages may not be modified, and any modification will be useless
+            because the message have already been sent.
+            </remarks>
+            <param name="messages">The messages sent.</param>
+        </member>
+        <member name="M:CometD.Client.PublishTransportListener.OnMessages(System.Collections.Generic.IList{CometD.Bayeux.IMutableMessage})">
+            <summary>
+            Callback method invoke when the given messages have just arrived from the Bayeux server.
+            </summary>
+            <param name="messages">The messages arrived.</param>
+        </member>
+        <member name="M:CometD.Client.PublishTransportListener.OnConnectException(System.Exception,CometD.Bayeux.IMessage[])">
+            <summary>
+            Callback method invoked when the given messages have failed to be sent
+            because of a HTTP connection exception.
+            </summary>
+            <param name="ex">The exception that caused the failure.</param>
+            <param name="messages">The messages being sent.</param>
+        </member>
+        <member name="M:CometD.Client.PublishTransportListener.OnException(System.Exception,CometD.Bayeux.IMessage[])">
+            <summary>
+            Callback method invoked when the given messages have failed to be sent
+            because of a Web exception.
+            </summary>
+            <param name="ex">The exception that caused the failure.</param>
+            <param name="messages">The messages being sent.</param>
+        </member>
+        <member name="M:CometD.Client.PublishTransportListener.OnExpire(CometD.Bayeux.IMessage[])">
+            <summary>
+            Callback method invoked when the given messages have failed to be sent
+            because of a HTTP request timeout.
+            </summary>
+            <param name="messages">The messages being sent.</param>
+        </member>
+        <member name="M:CometD.Client.PublishTransportListener.OnProtocolError(System.String,System.Exception,CometD.Bayeux.IMessage[])">
+            <summary>
+            Callback method invoked when the given messages have failed to be sent
+            because of an unexpected Bayeux server exception was thrown.
+            </summary>
+            <param name="info">Bayeux server error message.</param>
+            <param name="ex">The exception that caused the failure.</param>
+            <param name="messages">The messages being sent.</param>
+        </member>
+        <member name="M:CometD.Client.PublishTransportListener.ProcessMessage(CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Receives a message (from the server) and process it.
+            </summary>
+            <param name="message">The mutable version of the message received.</param>
+        </member>
+        <member name="M:CometD.Client.PublishTransportListener.OnFailure(System.Exception,CometD.Bayeux.IMessage[])">
+            <summary>
+            Callback method invoked when the given messages have failed to be sent.
+            </summary>
+            <param name="ex">The exception that caused the failure.</param>
+            <param name="messages">The messages being sent.</param>
+        </member>
+        <member name="T:CometD.Client.HandshakeTransportListener">
+            <summary>
+            The implementation of a listener for handshaking messages on a <see cref="T:CometD.Bayeux.ITransport"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.HandshakeTransportListener.#ctor(CometD.Client.BayeuxClient)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Client.HandshakeTransportListener"/> class.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.HandshakeTransportListener.OnFailure(System.Exception,CometD.Bayeux.IMessage[])">
+            <summary>
+            Try to re-handshake on failure.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.HandshakeTransportListener.ProcessMessage(CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Processes the handshaking message have just arrived.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.ConnectTransportListener">
+            <summary>
+            The implementation of a listener for connecting messages on a <see cref="T:CometD.Bayeux.ITransport"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.ConnectTransportListener.#ctor(CometD.Client.BayeuxClient)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Client.ConnectTransportListener"/> class.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.ConnectTransportListener.OnFailure(System.Exception,CometD.Bayeux.IMessage[])">
+            <summary>
+            Try to re-connect on failure.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.ConnectTransportListener.ProcessMessage(CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Processes the connecting message have just arrived.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.DisconnectTransportListener">
+            <summary>
+            The implementation of a listener for disconnecting messages on a <see cref="T:CometD.Bayeux.ITransport"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.DisconnectTransportListener.#ctor(CometD.Client.BayeuxClient)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Client.DisconnectTransportListener"/> class.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.DisconnectTransportListener.OnFailure(System.Exception,CometD.Bayeux.IMessage[])">
+            <summary>
+            Terminates the Bayeux client session.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.DisconnectTransportListener.ProcessMessage(CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Processes the disconnecting message have just arrived.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.Transport.ClientTransport">
+            <summary>
+            Represents the base client <see cref="T:CometD.Bayeux.ITransport">Transport</see> of a Bayeux client session.
+            </summary>
+        </member>
+        <member name="F:CometD.Client.Transport.ClientTransport.TimeoutOption">
+            <summary>
+            The polling duration (timeout for all transports).
+            </summary>
+        </member>
+        <member name="F:CometD.Client.Transport.ClientTransport.IntervalOption">
+            <summary>
+            The polling interval.
+            </summary>
+        </member>
+        <member name="F:CometD.Client.Transport.ClientTransport.MaxNetworkDelayOption">
+            <summary>
+            The HTTP request timeout option.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.ClientTransport.#ctor(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Client.Transport.ClientTransport"/> class.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.ClientTransport.Init">
+            <summary>
+            Initializes this client transport.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.ClientTransport.Abort">
+            <summary>
+            Cancels all available HTTP requests in the client transport.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.ClientTransport.Reset">
+            <summary>
+            Resets this client transport.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.ClientTransport.Terminate">
+            <summary>
+            Terminates this client transport.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.ClientTransport.Accept(System.String)">
+            <summary>
+            Checks if this client transport supports the specified Bayeux version.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.ClientTransport.Send(CometD.Client.Transport.ITransportListener,CometD.Bayeux.IMutableMessage[])">
+            <summary>
+            Sends the specified messages to a Bayeux server asynchronously.
+            </summary>
+            <param name="listener">The listener used to process the request response.</param>
+            <param name="messages">The list of messages will be sent in one request.</param>
+        </member>
+        <member name="T:CometD.Client.Transport.HttpClientTransport">
+            <summary>
+            Represents the base class of the HTTP Client <see cref="T:CometD.Bayeux.ITransport">Transport</see>.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.Transport.HttpClientTransport.Url">
+            <summary>
+            All HTTP requests are made relative to this base URL.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.Transport.HttpClientTransport.CookieProvider">
+            <summary>
+            HTTP request cookies collection.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.HttpClientTransport.#ctor(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Client.Transport.HttpClientTransport"/> class.
+            </summary>
+            <param name="name">The transport name (required).</param>
+            <param name="options">The HTTP request (header) options.</param>
+        </member>
+        <member name="M:CometD.Client.Transport.HttpClientTransport.GetCookie(System.String)">
+            <summary>
+            Returns the <see cref="T:System.Net.Cookie"/> with a specific name from this HTTP transport.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.HttpClientTransport.SetCookie(System.Net.Cookie)">
+            <summary>
+            Adds a <see cref="T:System.Net.Cookie"/> to this HTTP transport.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.HttpClientTransport.ApplyRequestHeaders(System.Net.HttpWebRequest)">
+            <summary>
+            Setups HTTP request headers.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.HttpClientTransport.ApplyRequestCookies(System.Net.HttpWebRequest)">
+            <summary>
+            Setups HTTP request cookies.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.Transport.ITransportListener">
+            <summary>
+            Represents a listener on a <see cref="T:CometD.Bayeux.ITransport"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.ITransportListener.OnSending(CometD.Bayeux.IMessage[])">
+            <summary>
+            Callback method invoked when the given messages have hit the network towards the Bayeux server.
+            </summary>
+            <remarks>
+            The messages may not be modified, and any modification will be useless
+            because the message have already been sent.
+            </remarks>
+            <param name="messages">The messages sent.</param>
+        </member>
+        <member name="M:CometD.Client.Transport.ITransportListener.OnMessages(System.Collections.Generic.IList{CometD.Bayeux.IMutableMessage})">
+            <summary>
+            Callback method invoke when the given messages have just arrived from the Bayeux server.
+            </summary>
+            <param name="messages">The messages arrived.</param>
+        </member>
+        <member name="M:CometD.Client.Transport.ITransportListener.OnConnectException(System.Exception,CometD.Bayeux.IMessage[])">
+            <summary>
+            Callback method invoked when the given messages have failed to be sent
+            because of a HTTP connection exception.
+            </summary>
+            <param name="ex">The exception that caused the failure.</param>
+            <param name="messages">The messages being sent.</param>
+        </member>
+        <member name="M:CometD.Client.Transport.ITransportListener.OnException(System.Exception,CometD.Bayeux.IMessage[])">
+            <summary>
+            Callback method invoked when the given messages have failed to be sent
+            because of a Web exception.
+            </summary>
+            <param name="ex">The exception that caused the failure.</param>
+            <param name="messages">The messages being sent.</param>
+        </member>
+        <member name="M:CometD.Client.Transport.ITransportListener.OnExpire(CometD.Bayeux.IMessage[])">
+            <summary>
+            Callback method invoked when the given messages have failed to be sent
+            because of a HTTP request timeout.
+            </summary>
+            <param name="messages">The messages being sent.</param>
+        </member>
+        <member name="M:CometD.Client.Transport.ITransportListener.OnProtocolError(System.String,System.Exception,CometD.Bayeux.IMessage[])">
+            <summary>
+            Callback method invoked when the given messages have failed to be sent
+            because of an unexpected Bayeux server exception was thrown.
+            </summary>
+            <param name="info">Bayeux server error message.</param>
+            <param name="ex">The exception that caused the failure.</param>
+            <param name="messages">The messages being sent.</param>
+        </member>
+        <member name="T:CometD.Client.Transport.LongPollingTransport">
+            <summary>
+            Represents the long-polling HTTP <see cref="T:CometD.Bayeux.ITransport">Transport</see> of a Bayeux client session.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.Transport.LongPollingTransport.Advice">
+            <summary>
+            Stores the last transport Timeout value (in milliseconds)
+            that was contained in the <see cref="P:CometD.Bayeux.IMessage.Advice"/> field
+            of the last received connecting message, to use for next requests.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.LongPollingTransport.RemoveRequest(CometD.Client.Transport.LongPollingRequest)">
+            <summary>
+            Removes a specified HTTP request from the requests queue (when it is completed).
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.LongPollingTransport.#ctor(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Client.Transport.LongPollingTransport"/> class.
+            </summary>
+            <param name="options">The HTTP request (header) options.</param>
+        </member>
+        <member name="P:CometD.Client.Transport.LongPollingTransport.OptionPrefix">
+            <summary>
+            Specifies an option prefix made of string segments separated by the "." character,
+            used to override more generic configuration entries.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.LongPollingTransport.Accept(System.String)">
+            <summary>
+            Accepts all Bayeux versions below 2.3.1.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.LongPollingTransport.Init">
+            <summary>
+            Initializes this client transport.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.LongPollingTransport.Abort">
+            <summary>
+            Cancels all available HTTP requests in the client transport.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.LongPollingTransport.Reset">
+            <summary>
+            Resets this client transport.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.LongPollingTransport.Send(CometD.Client.Transport.ITransportListener,CometD.Bayeux.IMutableMessage[])">
+            <summary>
+            Sends the specified messages to a Bayeux server asynchronously.
+            </summary>
+            <param name="listener">The listener used to process the request response.</param>
+            <param name="messages">The list of messages will be sent in one HTTP request.</param>
+        </member>
+        <member name="M:CometD.Client.Transport.LongPollingTransport.ToString">
+            <summary>
+            Used to debug.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.Transport.LongPollingRequest">
+            <summary>
+            The wrapper class of <see cref="T:System.Net.HttpWebRequest"/>, used to make a HTTP request to a URI.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.LongPollingRequest.#ctor(CometD.Client.Transport.LongPollingTransport,System.Net.HttpWebRequest,CometD.Client.Transport.ITransportListener,CometD.Bayeux.IMessage[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Client.Transport.LongPollingRequest"/> class.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.LongPollingRequest.Abort">
+            <summary>
+            Cancels this HTTP Web request.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.LongPollingRequest.Send">
+            <summary>
+            Begins this HTTP Web request.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.LongPollingRequest.TimeoutCallback(System.Object,System.Boolean)">
+            <summary>
+            Abort the request if the timer fires.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.LongPollingRequest.ToString">
+            <summary>
+            Used to debug.
+            </summary>
+        </member>
+        <member name="T:CometD.Client.Transport.TransportRegistry">
+            <summary>
+            Represents a registry of <see cref="T:CometD.Client.Transport.ClientTransport"/>s.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.TransportRegistry.Add(CometD.Client.Transport.ClientTransport)">
+            <summary>
+            Adds a new <see cref="T:CometD.Client.Transport.ClientTransport"/> into this registry.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.Transport.TransportRegistry.KnownTransports">
+            <summary>
+            Returns unmodifiable collection of known transports.
+            </summary>
+        </member>
+        <member name="P:CometD.Client.Transport.TransportRegistry.AllowedTransports">
+            <summary>
+            Returns unmodifiable list of allowed transports.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.TransportRegistry.Negotiate(System.Collections.Generic.IEnumerable{System.String},System.String)">
+            <summary>
+            Returns a list of requested transports that exists in this registry.
+            </summary>
+        </member>
+        <member name="M:CometD.Client.Transport.TransportRegistry.GetTransport(System.String)">
+            <summary>
+            Returns an existing <see cref="T:CometD.Client.Transport.ClientTransport"/> in this registry.
+            </summary>
+            <param name="transport">The transport name.</param>
+            <returns>Return null if the <paramref name="transport"/> does not exist.</returns>
+        </member>
+        <member name="M:CometD.Client.Transport.TransportRegistry.ToString">
+            <summary>
+            Used to debug.
+            </summary>
+        </member>
+        <member name="T:CometD.Common.TransportException">
+            <summary>
+            Defines the base class for Bayeux transport exceptions.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.TransportException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Common.TransportException"/> class.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.TransportException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Common.TransportException"/> class
+            with a specified error message.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.TransportException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Common.TransportException"/> class
+            with a specified error message and a reference to the inner exception
+            that is the cause of this exception.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.TransportException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Common.TransportException"/> class with serialized data.
+            </summary>
+        </member>
+        <member name="T:CometD.Common.AbstractClientSession">
+            <summary>
+            <p>Partial implementation of <see cref="T:CometD.Bayeux.Client.IClientSession"/>.</p>
+            <p>It handles extensions and batching, and provides utility methods to be used by subclasses.</p>
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Common.AbstractClientSession"/> class.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.NewMessageId">
+            <summary>
+            Generates a new message id.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.AddExtension(CometD.Bayeux.Client.IExtension)">
+            <summary>
+            Adds a new extension to this client session.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.RemoveExtension(CometD.Bayeux.Client.IExtension)">
+            <summary>
+            Removes an existing extension from this client session.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.AbstractClientSession.Extensions">
+            <summary>
+            Returns an immutable list of extensions present in this <see cref="T:CometD.Bayeux.Client.IClientSession"/> instance.
+            </summary>
+            <seealso cref="M:CometD.Common.AbstractClientSession.AddExtension(CometD.Bayeux.Client.IExtension)"/>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.Handshake">
+            <summary>
+            Equivalent to <see cref="M:CometD.Common.AbstractClientSession.Handshake(System.Collections.Generic.IDictionary{System.String,System.Object})"/>(null).
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.Handshake(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initiates the Bayeux protocol handshake with the server(s).
+            </summary>
+            <param name="handshakeFields">Additional fields to add to the handshake message.</param>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.GetChannel(System.String,System.Boolean)">
+            <summary>
+            Returns a client side channel scoped by this session.
+            </summary>
+            <param name="channelId">Specific or wild channel name.</param>
+            <param name="create">Whether to create the client session channel if it does not exist.</param>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.ExtendSend(CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Sends the specified mutable message with each existing session extensions.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.ExtendReceive(CometD.Bayeux.IMutableMessage)">
+            <summary>
+            Receives the specified mutable message with each existing session extensions.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.NewChannelId(System.String)">
+            <summary>
+            Creates a new <see cref="T:CometD.Bayeux.ChannelId"/> object from the specified channel id string.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.NewChannel(CometD.Bayeux.ChannelId)">
+            <summary>
+            Creates a new <see cref="T:CometD.Common.AbstractSessionChannel"/> object from the specified channel id.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.AbstractClientSession.Id">
+            <summary>
+            The client id of the session.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.AbstractClientSession.IsConnected">
+            <summary>
+            A connected session is a session where the link between the client and the server
+            has been established.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.AbstractClientSession.IsHandshook">
+            <summary>
+            A handshook session is a session where the handshake has successfully completed.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.Disconnect">
+            <summary>
+            Disconnects this session, ending the link between the client and the server peers.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets a named session attribute value.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.GetAttribute(System.String)">
+            <summary>
+            Retrieves the value of named session attribute.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.AbstractClientSession.AttributeNames">
+            <summary>
+            Returns the list of session attribute names.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.RemoveAttribute(System.String)">
+            <summary>
+            Removes a named session attribute.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.Batch(System.Action)">
+            <summary>
+            Executes the given command in a batch so that any Bayeux message sent
+            by the command (via the Bayeux API) is queued up until the end of the
+            command and then all messages are sent at once.
+            </summary>
+            <param name="batch">The Runnable to run as a batch.</param>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.StartBatch">
+            <summary>
+            Starts a batch, to be ended with <see cref="M:CometD.Common.AbstractClientSession.EndBatch"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.EndBatch">
+            <summary>
+            Ends a batch started with <see cref="M:CometD.Common.AbstractClientSession.StartBatch"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.SendBatch">
+            <summary>
+            Sends all existing messages at the end of the batch.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.AbstractClientSession.IsBatching">
+            <summary>
+            Whether batching is executing or not.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.ResetSubscriptions">
+            <summary>
+            Clears all subscriptions from each channels of this client session.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.Receive(CometD.Bayeux.IMutableMessage)">
+            <summary>
+            <p>Receives a message (from the server) and process it.</p>
+            <p>Processing the message involves calling the receive extensions and the channel listeners.</p>
+            </summary>
+            <param name="message">The mutable version of the message received.</param>
+        </member>
+        <member name="M:CometD.Common.AbstractClientSession.ToString">
+            <summary>
+            Used to debug.
+            </summary>
+        </member>
+        <member name="T:CometD.Common.AbstractSessionChannel">
+            <summary>
+            A channel scoped to a <see cref="T:CometD.Bayeux.Client.IClientSession"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractSessionChannel.#ctor(CometD.Bayeux.ChannelId)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Common.AbstractSessionChannel"/> class
+            with the specified <see cref="P:CometD.Common.AbstractSessionChannel.ChannelId"/>.
+            </summary>
+            <param name="id">Holder of a channel id broken into path segments.</param>
+        </member>
+        <member name="M:CometD.Common.AbstractSessionChannel.AddListener(CometD.Bayeux.Client.IClientSessionChannelListener)">
+            <summary>
+            <p>Adds a listener to this channel.</p>
+            <p>If the listener is a <see cref="T:CometD.Bayeux.Client.IMessageListener"/>, it will be invoked
+            if a message arrives to this channel.</p>
+            <p>Adding a listener never involves communication with the server,
+            differently from <see cref="M:CometD.Common.AbstractSessionChannel.Subscribe(CometD.Bayeux.Client.IMessageListener)"/>.</p>
+            <p>Listeners are best suited to receive messages from meta channels.</p>
+            </summary>
+            <param name="listener">The listener to add.</param>
+        </member>
+        <member name="M:CometD.Common.AbstractSessionChannel.RemoveListener(CometD.Bayeux.Client.IClientSessionChannelListener)">
+            <summary>
+            <p>Removes the given <paramref name="listener"/> from this channel.</p>
+            <p>Removing a listener never involves communication with the server,
+            differently from <see cref="M:CometD.Common.AbstractSessionChannel.Unsubscribe(CometD.Bayeux.Client.IMessageListener)"/>.</p>
+            </summary>
+            <param name="listener">The listener to remove (null to remove all).</param>
+        </member>
+        <member name="P:CometD.Common.AbstractSessionChannel.Listeners">
+            <summary>
+            Returns an immutable snapshot of the listeners.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.AbstractSessionChannel.Session">
+            <summary>
+            The client session associated with this channel.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractSessionChannel.Publish(System.Object)">
+            <summary>
+            <p>Publishes the given <paramref name="data"/> onto this channel.</p>
+            <p>The <paramref name="data"/> published must not be null and can be any object that
+            can be natively converted to JSON (numbers, strings, arrays, lists, maps),
+            or objects for which a JSON converter has been registered with the
+            infrastructure responsible of the JSON conversion.</p>
+            </summary>
+            <remarks>Equivalent to <see cref="M:CometD.Common.AbstractSessionChannel.Publish(System.Object,System.String)"/>(data, null).</remarks>
+            <param name="data">The data to publish.</param>
+            <seealso cref="M:CometD.Common.AbstractSessionChannel.Publish(System.Object,System.String)"/>
+        </member>
+        <member name="M:CometD.Common.AbstractSessionChannel.Publish(System.Object,System.String)">
+            <summary>
+            Publishes the given <paramref name="data"/> to this channel,
+            optionally specifying the <paramref name="messageId"/> to set on the publish message.
+            </summary>
+            <param name="data">The data to publish.</param>
+            <param name="messageId">The message id to set on the message,
+            or null to let the implementation choose the message id.</param>
+        </member>
+        <member name="M:CometD.Common.AbstractSessionChannel.Subscribe(CometD.Bayeux.Client.IMessageListener)">
+            <summary>
+            <p>Subscribes the given <paramref name="listener"/> to receive messages sent to this channel.</p>
+            <p>Subscription involves communication with the server only for the first listener
+            subscribed to this channel. Listeners registered after the first will not cause a message
+            being sent to the server.</p>
+            </summary>
+            <param name="listener">The listener to register and invoke when a message arrives on this channel.</param>
+            <seealso cref="M:CometD.Common.AbstractSessionChannel.Unsubscribe(CometD.Bayeux.Client.IMessageListener)"/>
+            <seealso cref="M:CometD.Common.AbstractSessionChannel.AddListener(CometD.Bayeux.Client.IClientSessionChannelListener)"/>
+        </member>
+        <member name="M:CometD.Common.AbstractSessionChannel.Unsubscribe(CometD.Bayeux.Client.IMessageListener)">
+            <summary>
+            <p>Unsubscribes the given <paramref name="listener"/> from receiving messages sent to this channel.</p>
+            <p>Unsubscription involves communication with the server only for the last listener
+            unsubscribed from this channel.</p>
+            </summary>
+            <param name="listener">The listener to unsubscribe.</param>
+            <seealso cref="M:CometD.Common.AbstractSessionChannel.Subscribe(CometD.Bayeux.Client.IMessageListener)"/>
+            <seealso cref="M:CometD.Common.AbstractSessionChannel.Unsubscribe"/>
+        </member>
+        <member name="M:CometD.Common.AbstractSessionChannel.Unsubscribe">
+            <summary>
+            Unsubscribes all subscribers registered on this channel.
+            </summary>
+            <seealso cref="M:CometD.Common.AbstractSessionChannel.Unsubscribe(CometD.Bayeux.Client.IMessageListener)"/>
+        </member>
+        <member name="P:CometD.Common.AbstractSessionChannel.Subscribers">
+            <summary>
+            Return an immutable snapshot of the subscribers.
+            </summary>
+            <seealso cref="M:CometD.Common.AbstractSessionChannel.Subscribe(CometD.Bayeux.Client.IMessageListener)"/>
+        </member>
+        <member name="M:CometD.Common.AbstractSessionChannel.NotifyMessageListeners(CometD.Bayeux.IMessage)">
+            <summary>
+            Notifies the received message to all existing listeners.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractSessionChannel.SendSubscribe">
+            <summary>
+            Send subscription message(s) to Bayeux server
+            to subscribe this session channel with all assigned message listeners.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractSessionChannel.SendUnsubscribe">
+            <summary>
+            Send un-subscription message(s) to Bayeux server
+            to un-subscribe all assigned message listeners from this session channel.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractSessionChannel.ResetSubscriptions">
+            <summary>
+            Clears all subscriptions from this session channel.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.AbstractSessionChannel.Id">
+            <summary>
+            The channel id as a string.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.AbstractSessionChannel.ChannelId">
+            <summary>
+            The channel ID as a <see cref="P:CometD.Common.AbstractSessionChannel.ChannelId"/>.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.AbstractSessionChannel.IsMeta">
+            <summary>
+            Tells whether the channel is a meta channel,
+            that is if its id starts with <code>"/meta/"</code>.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.AbstractSessionChannel.IsService">
+            <summary>
+            Tells whether the channel is a service channel,
+            that is if its id starts with <code>"/service/"</code>.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.AbstractSessionChannel.IsBroadcast">
+            <summary>
+            A broadcasting channel is a channel that is neither a
+            meta channel nor a service channel.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.AbstractSessionChannel.IsWild">
+            <summary>
+            Tells whether a channel contains the wild character '*',
+            for example <code>"/foo/*"</code> or if it is <see cref="P:CometD.Common.AbstractSessionChannel.IsDeepWild"/>.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.AbstractSessionChannel.IsDeepWild">
+            <summary>
+            Tells whether a channel contains the deep wild characters '**',
+            for example <code>"/foo/**"</code>.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractSessionChannel.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets a named channel attribute value.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractSessionChannel.GetAttribute(System.String)">
+            <summary>
+            Retrieves the value of named channel attribute.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.AbstractSessionChannel.AttributeNames">
+            <summary>
+            The list of channel attribute names.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractSessionChannel.RemoveAttribute(System.String)">
+            <summary>
+            Removes a named channel attribute.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractSessionChannel.ToString">
+            <summary>
+            Used to debug.
+            </summary>
+        </member>
+        <member name="T:CometD.Common.AbstractTransport">
+            <summary>
+            Partial implementation of <see cref="T:CometD.Bayeux.ITransport"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractTransport.#ctor(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Common.AbstractTransport"/> class.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.AbstractTransport.Name">
+            <summary>
+            The well known name of this transport, used in transport negotiations.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.AbstractTransport.GetOption(System.String)">
+            <summary>
+            Get an option value by searching the option name tree.
+            The option map obtained by calling <code>BayeuxServer.Options</code>
+            is searched for the option name with the most specific prefix.
+            </summary>
+            <example>
+            If this transport was initialized with calls:
+            <pre>
+              OptionPrefix = "long-polling.jsonp";
+            </pre>
+            then a call to GetOption("foobar") will look for the most specific value with names:
+            <pre>
+              long-polling.json.foobar
+              long-polling.foobar
+              foobar
+            </pre>
+            </example>
+        </member>
+        <member name="M:CometD.Common.AbstractTransport.SetOption(System.String,System.Object)">
+            <summary>
+            Sets the specified configuration option with the given <paramref name="value"/>.
+            </summary>
+            <param name="qualifiedName">The configuration option name.</param>
+            <param name="value">The configuration option value.</param>
+            <seealso cref="M:CometD.Common.AbstractTransport.GetOption(System.String)"/>
+        </member>
+        <member name="P:CometD.Common.AbstractTransport.OptionNames">
+            <summary>
+            The set of configuration options.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.AbstractTransport.OptionPrefix">
+            <summary>
+            Set the option name prefix segment.
+            <p>Normally this is called by the super class constructors to establish
+            a naming hierarchy for options and interacts with the <see cref="M:CometD.Common.AbstractTransport.SetOption(System.String,System.Object)"/>
+            method to create a naming hierarchy for options.</p>
+            </summary>
+            <remarks>
+            The various <see cref="M:CometD.Common.AbstractTransport.GetOption(System.String)"/> methods will search this
+            name tree for the most specific match.
+            </remarks>
+            <example>
+            For example the following sequence of calls:
+            <pre>
+              SetOption("foo", "x");
+              SetOption("bar", "y");
+              OptionPrefix = "long-polling";
+              SetOption("foo", "z");
+              SetOption("whiz", "p");
+              OptionPrefix = "long-polling.jsonp";
+              SetOption("bang", "q");
+              SetOption("bar", "r");
+            </pre>
+            will establish the following option names and values:
+            <pre>
+              foo: x
+              bar: y
+              long-polling.foo: z
+              long-polling.whiz: p
+              long-polling.jsonp.bang: q
+              long-polling.jsonp.bar: r
+            </pre>
+            </example>
+        </member>
+        <member name="M:CometD.Common.AbstractTransport.GetOption(System.String,System.String)">
+            <summary>
+            Get option or default value.
+            </summary>
+            <param name="optionName">The option name.</param>
+            <param name="defaultValue">The default value.</param>
+            <returns>The option or default value.</returns>
+            <seealso cref="M:CometD.Common.AbstractTransport.GetOption(System.String)"/>
+        </member>
+        <member name="M:CometD.Common.AbstractTransport.GetOption``1(System.String,``0)">
+            <summary>
+            Get option or default value.
+            </summary>
+            <param name="optionName">The option name.</param>
+            <param name="defaultValue">The default value.</param>
+            <returns>The option or default value.</returns>
+            <seealso cref="M:CometD.Common.AbstractTransport.GetOption(System.String)"/>
+        </member>
+        <member name="M:CometD.Common.AbstractTransport.ToString">
+            <summary>
+            Used to debug.
+            </summary>
+        </member>
+        <member name="T:CometD.Common.DictionaryMessage">
+            <summary>
+            Implements the interface <see cref="T:CometD.Bayeux.IMutableMessage"/> with a <see cref="T:Dictionary&lt;string, object&gt;"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.DictionaryMessage.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Common.DictionaryMessage"/> class.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.DictionaryMessage.#ctor(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:CometD.Common.DictionaryMessage"/> class
+            that contains elements copied from the specified <see cref="T:IDictionary&lt;string, object&gt;"/>.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.DictionaryMessage.Advice">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.AdviceField"/>.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.DictionaryMessage.Channel">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.ChannelField"/>.
+            </summary>
+            <remarks>Bayeux message always have a non null channel.</remarks>
+        </member>
+        <member name="P:CometD.Common.DictionaryMessage.ChannelId">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.ChannelField"/>.
+            </summary>
+            <remarks>Bayeux message always have a non null channel.</remarks>
+        </member>
+        <member name="P:CometD.Common.DictionaryMessage.ClientId">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.ClientIdField"/>.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.DictionaryMessage.Data">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.DataField"/>.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.DictionaryMessage.DataAsDictionary">
+            <summary>
+            The data of the message as a <code>Dictionary</code>.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.DictionaryMessage.Extension">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.ExtensionField"/>.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.DictionaryMessage.Id">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.IdField"/>.
+            </summary>
+            <remarks>Support also old-style ids of type long.</remarks>
+        </member>
+        <member name="P:CometD.Common.DictionaryMessage.IsMeta">
+            <summary>
+            Whether the channel's message is a meta channel.
+            </summary>
+        </member>
+        <member name="P:CometD.Common.DictionaryMessage.IsPublishReply">
+            <summary>
+            Publish message replies contain the "successful" field.
+            </summary>
+            <value>Whether this message is a publish reply (as opposed to a published message).</value>
+        </member>
+        <member name="P:CometD.Common.DictionaryMessage.IsSuccessful">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.SuccessfulField"/>.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.DictionaryMessage.GetAdvice(System.Boolean)">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.AdviceField"/> and create it if it does not exist.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.DictionaryMessage.GetDataAsDictionary(System.Boolean)">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.DataField"/> and create it if it does not exist.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.DictionaryMessage.GetExtension(System.Boolean)">
+            <summary>
+            Convenience method to retrieve the <see cref="F:CometD.Bayeux.Message.ExtensionField"/> and create it if it does not exist.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.DictionaryMessage.ToString">
+            <summary>
+            Represents this message as a JSON string.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.DictionaryMessage.ParseMessages(System.String)">
+            <summary>
+            Converts the specified JSON string to a list of <see cref="T:CometD.Bayeux.IMutableMessage"/>.
+            </summary>
+        </member>
+        <member name="T:CometD.Common.ObjectConverter">
+            <summary>
+            Converts an object from one object type to another object type.
+            </summary>
+        </member>
+        <member name="F:CometD.Common.ObjectConverter.UnsignedNumberStyle">
+            <summary>
+            Unsigned integer number style.
+            </summary>
+        </member>
+        <member name="F:CometD.Common.ObjectConverter.IntegerNumberStyle">
+            <summary>
+            Signed integer number style.
+            </summary>
+        </member>
+        <member name="M:CometD.Common.ObjectConverter.Deserialize``1(System.String)">
+            <summary>
+            Converts the specified JSON string to an object of type <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">The type of the resulting object.</typeparam>
+            <param name="content">The JSON string to be deserialized.</param>
+            <returns>The deserialized object.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="content"/> is null.</exception>
+            <exception cref="T:System.ArgumentException">Invalid JSON <paramref name="content"/> string.</exception>
+            <exception cref="T:System.InvalidOperationException">It is not possible to convert input to <typeparamref name="T"/>.</exception>
+        </member>
+        <member name="M:CometD.Common.ObjectConverter.Serialize(System.Object)">
+            <summary>
+            Converts an object to a JSON string.
+            </summary>
+            <param name="value">The object to serialize.</param>
+            <returns>The serialized JSON string.</returns>
+            <exception cref="T:System.ArgumentException">The recursion limit was exceeded.</exception>
+            <exception cref="T:System.InvalidOperationException">The resulting JSON string exceeds MaxJsonLength.
+            -or- <paramref name="value"/> contains a circular reference.</exception>
+        </member>
+        <member name="M:CometD.Common.ObjectConverter.ToPrimitive``1(System.Object,``0)">
+            <summary>
+            Converts a specified <see cref="T:System.Object"/> to a primitive type
+            like <see cref="T:System.Boolean"/>, <see cref="T:System.Int32"/>, <see cref="T:System.Int64"/>,..
+            </summary>
+        </member>
+        <member name="M:CometD.Common.ObjectConverter.ToObject``1(System.Object,``0,System.Action{``0})">
+            <summary>
+            Converts a specified <see cref="T:System.Object"/> to a generic object type
+            like <see cref="T:System.Collections.IList"/>, <see cref="T:System.Collections.IDictionary"/>,..
+            </summary>
+        </member>
+    </members>
+</doc>

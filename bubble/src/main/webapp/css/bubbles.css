@@ -1,0 +1,22 @@
+	.myself>.usermsg>.arrow {
+ 		position:absolute;
+ 		top:30px;
+ 		right:-38px; /* 圆角的位置需要细心调试哦 */
+		width:0;
+ 		height:0;
+ 		font-size:0;
+ 		border:solid 20px;
+		z-index:-1;
+ 		border-color:#373737 #373737 #373737 #F8C301;
+	}
+	.others>.usermsg>.arrow{
+		position:absolute;
+ 		top:30px;
+ 		left:-38px; /* 圆角的位置需要细心调试哦 */
+		width:0;
+ 		height:0;
+ 		font-size:0;
+ 		border:solid 20px;
+		z-index:-1;
+ 		border-color:#373737 #F8C301 #373737 #373737;
+	}

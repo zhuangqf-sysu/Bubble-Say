@@ -1,0 +1,59 @@
+	li {				//新创建的那个li对象(气泡)
+		list-style：none;
+		padding:0px;				
+		max-width:80%;
+		position:relative;
+		clear:both;
+		margin-bottom:30px;	
+		text-align:left;
+	}
+	.arrow0 {				
+		border-top-color:#373737;                  //未选中任何标签
+		border-right-color:#373737;
+		border-bottom-color:#373737;
+		border-left-color:#CCCCCC;
+		
+	}
+	
+	.arrow_opinion{
+	    border-top-color:#373737;                //选中opinion标签
+		border-right-color:#373737;
+		border-bottom-color:#373737;
+		border-left-color:#F8C301;
+	}
+	
+	.arrow_question{
+		border-top-color:#373737;                  //选中question标签
+		border-right-color:#373737;
+		border-bottom-color:#373737;
+		border-left-color:#EF4340;
+	}
+	
+    .arrow_answer{
+        border-top-color:#373737;                 //选中answer标签
+		border-right-color:#373737;
+		border-bottom-color:#373737;
+		border-left-color:#6E3FCF;        
+    }
+
+    .arrow_chat{
+        border-top-color:#373737;                  //选中chat标签
+		border-right-color:#373737;
+		border-bottom-color:#373737;
+		border-left-color:#A6D4F2;
+    }
+	
+	.usermsg {
+		margin:0px;
+		padding:20px;
+		word-break:break-all;
+		margin-right:80px;
+		texta-lign:right;
+	}
+	
+	.usermsg_opinion{background-color:#F8C301;				//选中opinion标签}
+	.usermsg_question{background-color:#EF4340;				//选中question标签}
+	.usermsg_answer{background-color:#6E3FCF;				//选中answer标签}
+	.usermsg_chat{background-color:#A6D4F2;				//选中chat标签}
+	.usermsg0{background-color:#CCCCCC;				//未选中任何标签}
+	

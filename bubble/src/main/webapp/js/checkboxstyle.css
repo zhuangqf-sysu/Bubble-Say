@@ -1,0 +1,64 @@
+input[type=checkbox].css-checkbox {
+	position:absolute;
+	left:-1000px; 
+	z-index:-1; 
+	overflow: hidden; 
+	clip: rect(0 0 0 0); 
+}
+
+input[type=checkbox].css-checkbox + label.css-label {
+	padding-left:3rem;
+	padding-right:1rem;
+	display:inline-block;
+	margin-top:1rem;
+	line-height:3rem;
+	background-repeat:no-repeat;
+	background-position:0 0;
+	font-size:3rem;
+	color:#00000;
+	vertical-align:middle;
+	cursor:pointer;
+	-webkit-tap-highlight-color:transparent;            //rgba(255,0,0,0);
+}
+
+label#checkbox1 {
+	background-image:url("../images/chatroom/opinion.png");
+	/*http://www.csscheckbox.com/checkboxes/u/csscheckbox_5d4be13f65ba689f1d0d18e2490f463b.png*/
+	background-size:3rem;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+label#checkbox2 {
+	background-image:url("../images/chatroom/question.png");
+	background-size:3rem;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+label#checkbox3 {
+	background-image:url("../images/chatroom/answer.png");
+	background-size:3rem;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+label#checkbox4 {
+	background-image:url("../images/chatroom/chatting.png");
+	background-size:3rem;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}

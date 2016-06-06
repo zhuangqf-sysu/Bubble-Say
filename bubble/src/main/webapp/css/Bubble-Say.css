@@ -1,0 +1,79 @@
+			html{
+				margin:0 auto;
+				height:100%;
+				font-size:15px;			
+			}
+			body {
+				margin:0 auto;
+				height:100%;
+				background-color:rgba(5,5,5,0.8);
+			}
+			#screen {
+				width:100%;				
+				margin:0 auto;
+				position:relative;
+			}
+			#appname {
+				width:90%;
+				display:block;
+				margin:0 auto;
+			}
+			#bubble {
+				width:70%;
+				display:block;
+				margin:0 auto;
+				margin-top:-3%;							
+			}
+			
+			#loadin {
+				width:90%;
+				display:block;
+				margin:0 auto;
+				margin-top:3%;
+				color:white;
+				font-family:"Tahoma";   //"Verdana";
+				font-size:5rem;
+				text-align:center;
+				line-height:9rem;
+			}
+			#channel,#name {
+				display:inline-block;
+				height:5rem;
+				width:28rem;
+				font-family:"Tahoma";
+				font-size:4rem;
+				vertical-align:middle;
+				border:5px solid rgb(103,170,255);
+				border-radius:3.5rem;
+				overflow:hidden;
+			}
+			a {
+				-webkit-tap-highlight-color:rgba(5,5,5,0); 
+			}
+			a:link,a:visited {
+				text-decoration:none;
+				outline:none;
+			}
+			a:active {
+				text-decoration:none;
+			}
+			#channel:focus,#name:focus {
+				outline:none;
+			}
+			#enter {
+				display:inline-block;
+				box-sizing:border-box;
+				height:5rem;
+				width:25rem;
+				font-family:"Tahoma";
+				font-size:3.5rem;
+				line-height:4rem;
+				color:rgb(25,25,25);
+				vertical-align:middle;
+				background-color:rgb(229,229,229);
+				border:5px solid rgb(103,170,255);
+				border-radius:3.5rem;
+			}
+			#enter:focus {
+				outline:none;
+			}

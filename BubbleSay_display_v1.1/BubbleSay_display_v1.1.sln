@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CometD.NET", "CometD.NET\CometD.NET.csproj", "{876EF4CB-B05D-42AE-AFEE-94620B9EF82D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleSay_display_v1.1", "BubbleSay_display_v1.1\BubbleSay_display_v1.1.csproj", "{588EF9BC-3704-49CD-9AAB-DD0F108023DC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{876EF4CB-B05D-42AE-AFEE-94620B9EF82D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{876EF4CB-B05D-42AE-AFEE-94620B9EF82D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{876EF4CB-B05D-42AE-AFEE-94620B9EF82D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{876EF4CB-B05D-42AE-AFEE-94620B9EF82D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{588EF9BC-3704-49CD-9AAB-DD0F108023DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{588EF9BC-3704-49CD-9AAB-DD0F108023DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{588EF9BC-3704-49CD-9AAB-DD0F108023DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{588EF9BC-3704-49CD-9AAB-DD0F108023DC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

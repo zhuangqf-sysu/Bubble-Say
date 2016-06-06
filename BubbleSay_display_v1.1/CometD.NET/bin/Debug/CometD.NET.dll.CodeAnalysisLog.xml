@@ -1,0 +1,414 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="d:\program files (x86)\microsoft visual studio 14.0\team tools\static analysis tools\fxcop\Xml\CodeAnalysisReport.xsl"?>
+<FxCopReport Version="14.0">
+ <Namespaces>
+  <Namespace Name="CometD.Client.Extension">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">考虑将“CometD.Client.Extension”中定义的类型与另一个命名空间合并。</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+ </Namespaces>
+ <Targets>
+  <Target Name="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\bin\Debug\CometD.NET.dll">
+   <Modules>
+    <Module Name="cometd.net.dll">
+     <Messages>
+      <Message Id="NET" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="Breaking">
+       <Issue Name="Assembly" Certainty="85" Level="Error">更正程序集名称 'CometD.NET.dll' 中“NET”的大小写，将其改为“Net”。</Issue>
+      </Message>
+     </Messages>
+     <Namespaces>
+      <Namespace Name="CometD.Bayeux">
+       <Types>
+        <Type Name="IBayeuxListener" Kind="Interface" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="AvoidEmptyInterfaces" Category="Microsoft.Design" CheckId="CA1040" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="Breaking">
+           <Issue Certainty="90" Level="Warning">定义一个自定义特性来替换 'IBayeuxListener'。</Issue>
+          </Message>
+         </Messages>
+        </Type>
+        <Type Name="ISession" Kind="Interface" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Batch(System.Action)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message Id="0#" TypeName="ParameterNamesShouldNotMatchMemberNames" Category="Microsoft.Naming" CheckId="CA1719" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="Breaking">
+             <Issue Certainty="95" Level="Error">更改成员名或参数名 'batch'，使两者能相互区分。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="CometD.Bayeux.Client">
+       <Types>
+        <Type Name="IClientSession" Kind="Interface" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#GetChannel(System.String,System.Boolean)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="Breaking">
+             <Issue Certainty="75" Level="Error">用提供所有默认形参的重载来替换方法 'IClientSession.GetChannel(string, bool)'。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="CometD.Client">
+       <Types>
+        <Type Name="BayeuxClient" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="AvoidExcessiveClassCoupling" Category="Microsoft.Maintainability" CheckId="CA1506" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="Breaking">
+           <Issue Name="Type" Certainty="75" Level="Warning">'BayeuxClient' 与来自 15 个不同命名空间中的 83 个不同类型耦合。请重写或重构该类的方法，以降低它的类耦合度，或者考虑将该类的某些方法移到与之紧密耦合的其他某些类型中。高于 95 的类耦合度表示可维护性较差，介于 95 和 80 之间的类耦合度表示可维护性适中，低于 80 的类耦合度表示可维护性较好。</Issue>
+          </Message>
+         </Messages>
+         <Members>
+          <Member Name="#.ctor(System.String,CometD.Client.Transport.ClientTransport[])" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="Breaking">
+             <Issue Certainty="60" Level="Error" Path="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\Client" File="BayeuxClient.cs" Line="81">将方法 'BayeuxClient.BayeuxClient(string, params ClientTransport[])' 的参数 'url' 的类型从字符串改为 System.Uri，或者提供 'BayeuxClient.BayeuxClient(string, params ClientTransport[])' 的重载，允许将 'url' 作为 System.Uri 对象来传递。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Handshake(System.Collections.Generic.IDictionary`2&lt;System.String,System.Object&gt;,System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message Id="template" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="Breaking">
+             <Issue Name="MemberParameter" Certainty="95" Level="Error" Path="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\Client" File="BayeuxClient.cs" Line="547">在虚拟/接口成员 'BayeuxClient.Handshake(IDictionary&lt;string, object&gt;, int)' 中，重命名参数 'template'，使它不再与保留的语言关键字“template”冲突。如果使用保留的关键字作为虚拟/接口成员上参数的名称，则会使其他语言的使用者很难重写/实现该成员。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#ProcessHandshake(CometD.Bayeux.IMutableMessage)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="AvoidExcessiveComplexity" Category="Microsoft.Maintainability" CheckId="CA1502" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="NonBreaking">
+             <Issue Certainty="90" Level="Warning" Path="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\Client" File="BayeuxClient.cs" Line="835">'BayeuxClient.ProcessHandshake(IMutableMessage)' 的圈复杂度为 28。重写或重构该方法，以便将复杂度降低到 25。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#UpdateBayeuxClientState(System.Func`2&lt;CometD.Client.BayeuxClientState,CometD.Client.BayeuxClientState&gt;,System.Action)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="Breaking">
+             <Issue Certainty="75" Level="Error" Path="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\Client" File="BayeuxClient.cs" Line="1278">用提供所有默认形参的重载来替换方法 'BayeuxClient.UpdateBayeuxClientState(Func&lt;BayeuxClientState, BayeuxClientState&gt;, Action)'。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="BayeuxClientState" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Type" Kind="Property" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="Breaking">
+             <Issue Name="BaseType" Certainty="95" Level="Error" Path="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\Client" File="BayeuxClientState.cs" Line="32">由于存在继承方法 'object.GetType()'，属性名 'BayeuxClientState.Type' 会造成混淆。请重命名或移除该属性。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="BayeuxClientStates" Kind="Enum" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#ReHandshaking" Kind="Field" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message Id="Re" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="Breaking">
+             <Issue Name="Member" Certainty="85" Level="Error">更正成员名称 'BayeuxClientStates.ReHandshaking' 中“Re”的大小写，将其改为“RE”。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="ReHandshakingState" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message Id="Re" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="Breaking">
+           <Issue Name="Type" Certainty="85" Level="Error">更正类型名称 'ReHandshakingState' 中“Re”的大小写，将其改为“RE”。</Issue>
+          </Message>
+         </Messages>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="CometD.Client.Transport">
+       <Types>
+        <Type Name="HttpClientTransport" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#CookieProvider" Kind="Property" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="Breaking">
+             <Issue Certainty="75" Level="Warning" Path="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\Client\Transport" File="HttpClientTransport.cs" Line="34">通过移除属性 setter 将 'HttpClientTransport.CookieProvider' 更改为只读。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Url" Kind="Property" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="Breaking">
+             <Issue Certainty="75" Level="Error" Path="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\Client\Transport" File="HttpClientTransport.cs" Line="24">将属性 'HttpClientTransport.Url' 的类型从字符串改为 System.Uri。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="LongPollingRequest" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#GetRequestStreamCallback(System.IAsyncResult)" Kind="Method" Static="True" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="CriticalError" Path="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\Client\Transport" File="LongPollingRequest.cs" Line="133">修改 'LongPollingRequest.GetRequestStreamCallback(IAsyncResult)' 以便捕捉比 'Exception' 更具体的异常，或者再次引发该异常。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetResponseCallback(System.IAsyncResult)" Kind="Method" Static="True" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidExcessiveComplexity" Category="Microsoft.Maintainability" CheckId="CA1502" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="NonBreaking">
+             <Issue Certainty="90" Level="Warning" Path="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\Client\Transport" File="LongPollingRequest.cs" Line="149">'LongPollingRequest.GetResponseCallback(IAsyncResult)' 的圈复杂度为 39。重写或重构该方法，以便将复杂度降低到 25。</Issue>
+            </Message>
+            <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="CriticalError" Path="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\Client\Transport" File="LongPollingRequest.cs" Line="280">修改 'LongPollingRequest.GetResponseCallback(IAsyncResult)' 以便捕捉比 'Exception' 更具体的异常，或者再次引发该异常。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Send()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="CriticalError" Path="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\Client\Transport" File="LongPollingRequest.cs" Line="79">修改 'LongPollingRequest.Send()' 以便捕捉比 'Exception' 更具体的异常，或者再次引发该异常。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="LongPollingTransport" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Advice" Kind="Property" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="Breaking">
+             <Issue Certainty="75" Level="Warning" Path="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\Client\Transport" File="LongPollingTransport.cs" Line="30">通过移除属性 setter 将 'LongPollingTransport.Advice' 更改为只读。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Send(CometD.Client.Transport.ITransportListener,CometD.Bayeux.IMutableMessage[])" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="CriticalError" Path="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\Client\Transport" File="LongPollingTransport.cs" Line="213">修改 'LongPollingTransport.Send(ITransportListener, params IMutableMessage[])' 以便捕捉比 'Exception' 更具体的异常，或者再次引发该异常。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="CometD.Common">
+       <Types>
+        <Type Name="AbstractClientSession" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#GetChannel(System.String,System.Boolean)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="Breaking">
+             <Issue Certainty="75" Level="Error" Path="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\Common" File="AbstractClientSession.cs" Line="109">用提供所有默认形参的重载来替换方法 'AbstractClientSession.GetChannel(string, bool)'。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="AbstractSessionChannel" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#NotifyOnMessage(CometD.Bayeux.Client.IMessageListener,CometD.Bayeux.IMessage)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="CriticalError" Path="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\Common" File="AbstractSessionChannel.cs" Line="269">修改 'AbstractSessionChannel.NotifyOnMessage(IMessageListener, IMessage)' 以便捕捉比 'Exception' 更具体的异常，或者再次引发该异常。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="ObjectConverter" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#ToObject`1(System.Object,!!0,System.Action`1&lt;!!0&gt;)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="Breaking">
+             <Issue Certainty="75" Level="Error" Path="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\Common" File="ObjectConverter.cs" Line="134">用提供所有默认形参的重载来替换方法 'ObjectConverter.ToObject&lt;T&gt;(object, T, Action&lt;T&gt;)'。</Issue>
+            </Message>
+            <Message Id="0" TypeName="验证公共方法的参数" Category="Microsoft.Design" CheckId="CA1062" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\Common" File="ObjectConverter.cs" Line="146">在外部可见方法 'ObjectConverter.ToObject&lt;T&gt;(object, T, Action&lt;T&gt;)' 中，请在使用参数“value”之前先对其进行验证。</Issue>
+            </Message>
+            <Message Id="2" TypeName="验证公共方法的参数" Category="Microsoft.Design" CheckId="CA1062" Status="Active" Created="2016-05-25 12:26:53Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="D:\我的游戏\test1\BubbleSay_display_v1.1\CometD.NET\Common" File="ObjectConverter.cs" Line="167">在外部可见方法 'ObjectConverter.ToObject&lt;T&gt;(object, T, Action&lt;T&gt;)' 中，请在使用参数“finallyCallback”之前先对其进行验证。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+ </Targets>
+ <Rules>
+  <Rule TypeName="AvoidEmptyInterfaces" Category="Microsoft.Design" CheckId="CA1040">
+   <Name>避免使用空接口</Name>
+   <Description>接口应包含指定一组行为的成员。若要对类进行标记，请使用特性而不是空接口。</Description>
+   <Resolution Name="Default">定义一个自定义特性来替换 {0}。</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182128.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="90">Warning</MessageLevel>
+   <File Name="designrules.dll" Version="14.0.0.0" />
+  </Rule>
+  <Rule TypeName="AvoidExcessiveClassCoupling" Category="Microsoft.Maintainability" CheckId="CA1506">
+   <Name>避免过度类耦合度</Name>
+   <Description>类耦合度较高的类型和方法很难维护。</Description>
+   <Resolution Name="Type">{0} 与来自 {2} 个不同命名空间中的 {1} 个不同类型耦合。请重写或重构该类的方法，以降低它的类耦合度，或者考虑将该类的某些方法移到与之紧密耦合的其他某些类型中。高于 {3} 的类耦合度表示可维护性较差，介于 {3} 和 {4} 之间的类耦合度表示可维护性适中，低于 {4} 的类耦合度表示可维护性较好。</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/bb397994.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="90">Warning</MessageLevel>
+   <File Name="maintainabilityrules.dll" Version="14.0.0.0" />
+  </Rule>
+  <Rule TypeName="AvoidExcessiveComplexity" Category="Microsoft.Maintainability" CheckId="CA1502">
+   <Name>避免过度复杂</Name>
+   <Description>过于复杂的方法实现会增加理解和维护代码的难度。</Description>
+   <Resolution Name="Default">{0} 的圈复杂度为 {1}。重写或重构该方法，以便将复杂度降低到 {2}。</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182212.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="90">Warning</MessageLevel>
+   <File Name="maintainabilityrules.dll" Version="14.0.0.0" />
+  </Rule>
+  <Rule TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020">
+   <Name>避免使用类型极少的命名空间</Name>
+   <Description>命名空间一般应具有五个以上的类型。</Description>
+   <Resolution Name="Default">考虑将“{0}”中定义的类型与另一个命名空间合并。</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182130.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="50">Warning</MessageLevel>
+   <File Name="designrules.dll" Version="14.0.0.0" />
+  </Rule>
+  <Rule TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227">
+   <Name>集合属性应为只读</Name>
+   <Description>返回集合的属性应为只读，以确保用户无法完全替换后备存储。用户通过对集合调用相关方法仍然可以修改集合的内容。请注意，XmlSerializer 类对反序列化只读集合具有专门的支持。有关详细信息，请参见 XmlSerializer 概述。</Description>
+   <Resolution Name="Default">通过移除属性 setter 将 {0} 更改为只读。</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182327.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="75">Warning</MessageLevel>
+   <File Name="usagerules.dll" Version="14.0.0.0" />
+  </Rule>
+  <Rule TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026">
+   <Name>不应使用默认形参</Name>
+   <Description>某些编程语言不支持默认形参。用提供默认实参的方法重载来替换默认形参。</Description>
+   <Resolution Name="Default">用提供所有默认形参的重载来替换方法 {0}。</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182135.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="75">Error</MessageLevel>
+   <File Name="designrules.dll" Version="14.0.0.0" />
+  </Rule>
+  <Rule TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031">
+   <Name>不要捕捉一般异常类型</Name>
+   <Description>不应捕捉 Exception 或 SystemException。捕捉一般异常类型会使库用户看不到运行时问题，并会使调试复杂化。您应该仅捕捉自己可以进行适当处理的异常。</Description>
+   <Resolution Name="Default">修改 {0} 以便捕捉比 {1} 更具体的异常，或者再次引发该异常。</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182137.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">CriticalError</MessageLevel>
+   <File Name="designrules.dll" Version="14.0.0.0" />
+  </Rule>
+  <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
+   <Name>标识符的大小写应当正确</Name>
+   <Description>类型、命名空间和成员标识符应采用 Pascal 大小写格式。参数标识符应采用 Camel 大小写格式。这些标识符内由两个字母组成的首字母缩略词应全部大写，例如，应采用 System.IO，而不是 System.Io。由三个或更多个字母组成的首字母缩略词应采用 Pascal 大小写格式，例如，应采用 System.Xml，而不是 System.XML。Pascal 大小写格式约定每个单词的首字母大写，如 BackColor。Camel 大小写格式约定第一个单词的首字母小写，所有后续单词的首字母都大写，如 backgroundColor。尽管有些由两个字母组成的首字母缩略词习惯采用不完全大写形式，但不能因此而排斥此规则。例如，“DbConnection”很常见，但并不正确，应采用 DBConnection。为了与现有的非托管符号方案兼容，可能需要违反此规则。但一般来说，这些符号在使用它们的程序集之外不可见。</Description>
+   <Resolution Name="Assembly">更正程序集名称 {1} 中“{0}”的大小写，将其改为“{2}”。</Resolution>
+   <Resolution Name="Member">更正成员名称 {1} 中“{0}”的大小写，将其改为“{2}”。</Resolution>
+   <Resolution Name="Type">更正类型名称 {1} 中“{0}”的大小写，将其改为“{2}”。</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182240.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="85">Error</MessageLevel>
+   <File Name="namingrules.dll" Version="14.0.0.0" />
+  </Rule>
+  <Rule TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716">
+   <Name>标识符不应与关键字冲突</Name>
+   <Description>应避免使用与保留的语言关键字冲突的标识符。如果使用保留的语言关键字作为标识符，则会使其他语言的使用者很难使用您的 API。</Description>
+   <Resolution Name="MemberParameter">在虚拟/接口成员 {0} 中，重命名参数 {1}，使它不再与保留的语言关键字“{2}”冲突。如果使用保留的关键字作为虚拟/接口成员上参数的名称，则会使其他语言的使用者很难重写/实现该成员。</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182248.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Error</MessageLevel>
+   <File Name="namingrules.dll" Version="14.0.0.0" />
+  </Rule>
+  <Rule TypeName="ParameterNamesShouldNotMatchMemberNames" Category="Microsoft.Naming" CheckId="CA1719">
+   <Name>参数名不应与成员名冲突</Name>
+   <Description>参数名应有别于成员名。</Description>
+   <Resolution Name="Default">更改成员名或参数名 {0}，使两者能相互区分。</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182252.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Error</MessageLevel>
+   <File Name="namingrules.dll" Version="14.0.0.0" />
+  </Rule>
+  <Rule TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721">
+   <Name>属性名不应与 get 方法冲突。</Name>
+   <Description>发现与某一属性同名的 Get 方法。Get 方法和属性的名称应能够明确区分其功能上的差异。有关如何选择属性名以区分于方法名的信息，请参阅设计指南。</Description>
+   <Resolution Name="BaseType">由于存在继承方法 {1}，属性名 {0} 会造成混淆。请重命名或移除该属性。</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182253.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Error</MessageLevel>
+   <File Name="namingrules.dll" Version="14.0.0.0" />
+  </Rule>
+  <Rule TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054">
+   <Name>URI 参数不应为字符串</Name>
+   <Description>如果某个参数的名称中包含“uri”、“url”或“urn”，并且该参数被类型化为字符串，则应将该参数的类型改为 System.Uri，除非有一个重载方法已将该参数类型化为 URI。</Description>
+   <Resolution Name="Default">将方法 {1} 的参数 {0} 的类型从字符串改为 System.Uri，或者提供 {1} 的重载，允许将 {0} 作为 System.Uri 对象来传递。</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182174.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="60">Error</MessageLevel>
+   <File Name="designrules.dll" Version="14.0.0.0" />
+  </Rule>
+  <Rule TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056">
+   <Name>URI 属性不应是字符串</Name>
+   <Description>如果某属性的名称包含“uri”、“url”或“urn”，并且该属性被类型化为字符串，则应将其更改为 System.Uri。</Description>
+   <Resolution Name="Default">将属性 {0} 的类型从字符串改为 System.Uri。</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182175.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="75">Error</MessageLevel>
+   <File Name="designrules.dll" Version="14.0.0.0" />
+  </Rule>
+  <Rule TypeName="验证公共方法的参数" Category="Microsoft.Design" CheckId="CA1062">
+   <Name>验证公共方法的参数</Name>
+   <Description>应检查传递给外部可见方法的所有引用参数是否为 Null (在 VB 中为 Nothing)。如果适用，在参数为 null 时，引发 System.ArgumentNullException。</Description>
+   <Resolution Name="Default">在外部可见方法 {0} 中，请在使用参数“{1}”之前先对其进行验证。</Resolution>
+   <Owner>RuleOwner</Owner>
+   <Url>http://msdn.microsoft.com/library/ms182182.aspx</Url>
+   <Email />
+   <MessageLevel Certainty="75">Warning</MessageLevel>
+   <File Name="dataflowrules.dll" Version="14.0.0.0" />
+  </Rule>
+ </Rules>
+ <Localized>
+  <String Key="Category">类别</String>
+  <String Key="Certainty">确定性</String>
+  <String Key="CollapseAll">全部折叠</String>
+  <String Key="CheckId">检查 ID</String>
+  <String Key="Error">错误</String>
+  <String Key="Errors">错误</String>
+  <String Key="ExpandAll">全部展开</String>
+  <String Key="Help">帮助</String>
+  <String Key="Line">行</String>
+  <String Key="Messages">消息</String>
+  <String Key="LocationNotStoredInPdb">[位置未存储在 Pdb 中]</String>
+  <String Key="Project">项目</String>
+  <String Key="Resolution">解析</String>
+  <String Key="Rule">规则</String>
+  <String Key="RuleFile">规则文件</String>
+  <String Key="RuleDescription">规则说明</String>
+  <String Key="Source">源</String>
+  <String Key="Status">状态</String>
+  <String Key="Target">目标</String>
+  <String Key="Warning">警告</String>
+  <String Key="Warnings">警告</String>
+  <String Key="ReportTitle">代码分析报告</String>
+ </Localized>
+</FxCopReport>

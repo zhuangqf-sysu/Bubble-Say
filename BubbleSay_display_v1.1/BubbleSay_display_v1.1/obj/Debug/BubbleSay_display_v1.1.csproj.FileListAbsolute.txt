@@ -1,0 +1,15 @@
+D:\我的游戏\test1\BubbleSay_display_v1.1\BubbleSay_display_v1.1\bin\Debug\BubbleSay_display_v1.1.exe.config
+D:\我的游戏\test1\BubbleSay_display_v1.1\BubbleSay_display_v1.1\bin\Debug\BubbleSay_display_v1.1.exe
+D:\我的游戏\test1\BubbleSay_display_v1.1\BubbleSay_display_v1.1\bin\Debug\BubbleSay_display_v1.1.pdb
+D:\我的游戏\test1\BubbleSay_display_v1.1\BubbleSay_display_v1.1\obj\Debug\BubbleSay_display_v1.1.csprojResolveAssemblyReference.cache
+D:\我的游戏\test1\BubbleSay_display_v1.1\BubbleSay_display_v1.1\obj\Debug\BubbleSay_display_v1._1.Form1.resources
+D:\我的游戏\test1\BubbleSay_display_v1.1\BubbleSay_display_v1.1\obj\Debug\BubbleSay_display_v1._1.Properties.Resources.resources
+D:\我的游戏\test1\BubbleSay_display_v1.1\BubbleSay_display_v1.1\obj\Debug\BubbleSay_display_v1._1.Resource1.resources
+D:\我的游戏\test1\BubbleSay_display_v1.1\BubbleSay_display_v1.1\obj\Debug\BubbleSay_display_v1.1.csproj.GenerateResource.Cache
+D:\我的游戏\test1\BubbleSay_display_v1.1\BubbleSay_display_v1.1\obj\Debug\BubbleSay_display_v1.1.exe
+D:\我的游戏\test1\BubbleSay_display_v1.1\BubbleSay_display_v1.1\obj\Debug\BubbleSay_display_v1.1.pdb
+D:\我的游戏\test1\BubbleSay_display_v1.1\BubbleSay_display_v1.1\bin\Debug\CometD.NET.dll
+D:\我的游戏\test1\BubbleSay_display_v1.1\BubbleSay_display_v1.1\bin\Debug\log4net.dll
+D:\我的游戏\test1\BubbleSay_display_v1.1\BubbleSay_display_v1.1\bin\Debug\CometD.NET.pdb
+D:\我的游戏\test1\BubbleSay_display_v1.1\BubbleSay_display_v1.1\bin\Debug\CometD.NET.xml
+D:\我的游戏\test1\BubbleSay_display_v1.1\BubbleSay_display_v1.1\bin\Debug\log4net.xml
